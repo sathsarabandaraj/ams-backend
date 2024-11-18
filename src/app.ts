@@ -3,6 +3,8 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import type { Express } from 'express'
 import express from 'express'
+import studentRoutes from './routes/student.route'
+import { AppDataSource } from './configs/db.config'
 
 const app = express()
 
@@ -20,8 +22,21 @@ app.get('/', (req, res) => {
     res.send('AMS Backend')
 })
 
-export const startServer = async (port: number) => {
-    console.log(`Server is starting on port ${port}`)
+app.use('/api', studentRoutes)
+
+export const startServer = async (port: number): Promise<Express> => {
+    try {
+        await AppDataSource.initialize()
+        console.log('DB connection is successful')
+        app.listen(port, () => {
+            console.log(`Server is running on http://localhost:${port}`)
+        })
+
+        return app
+    } catch (err) {
+        console.log('DB connection was not successful', err)
+        throw err
+    }
 }
 
 export default startServer
