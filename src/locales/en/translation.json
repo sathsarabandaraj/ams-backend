@@ -1,5 +1,10 @@
 {
     "rootMsg": "AMS Backend API",
-    "server": {},
-    "student": {}
+    "server": {
+        "internalServerErr": "Internal Server Error"
+    },
+    "student": {
+        "studentCreated": "Student account created successfully",
+        "studentCreationFailed": "Failed to create student"
+    }
 }

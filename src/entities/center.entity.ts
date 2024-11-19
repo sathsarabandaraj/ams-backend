@@ -7,11 +7,14 @@ export class Center extends BaseEntity {
     @Column()
     name!: string
 
+    @Column({ unique: true })
+    code!: string
+        
     @Column()
     address!: string
 
-    @Column()
-    contactNo!: ContactInfo
+    @Column(() => ContactInfo)
+    contactPerson!: ContactInfo
 
     @Column({ nullable: true })
     description?: string

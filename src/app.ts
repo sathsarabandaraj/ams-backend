@@ -12,6 +12,14 @@ import middleware from 'i18next-http-middleware'  // Changed this import
 
 const app = express()
 
+app.use(
+    cors({
+        origin: 'http://localhost:*',
+        methods: 'GET, HEAD, PUT, PATCH, DELETE',
+        credentials: true
+    })
+)
+
 // Initialize i18next
 i18next
     .use(Backend)
@@ -26,7 +34,7 @@ i18next
             loadPath: path.join(__dirname, './locales/{{lng}}/{{ns}}.json'),
         },
         detection: {
-            order: ['querystring', 'cookie', 'header'],
+            order: ['cookie', 'header', 'querystring'],
             caches: ['cookie'],
             lookupQuerystring: 'lng',
             lookupCookie: 'i18next',
@@ -34,20 +42,12 @@ i18next
         },
         interpolation: {
             escapeValue: false
-        }
+        },
     });
 
+app.use(middleware.handle(i18next));  // Changed this line
 app.use(cookieParser())
 app.use(bodyParser.json())
-app.use(middleware.handle(i18next));  // Changed this line
-app.use(
-    cors({
-        origin: 'http://localhost:*',
-        methods: 'GET, HEAD, PUT, PATCH, DELETE',
-        credentials: true
-    })
-)
-
 app.get('/', (req, res) => {
     console.log('Current language:', req.language); // Log the current language
     console.log('Translation for rootMsg:', req.t('rootMsg')); // Log the translation for rootMsg

@@ -1,5 +1,10 @@
 {
     "rootMsg": "පසුබිම් යෙදුම් ක්‍රමලේඛන අතුරු මුහුණත",
-    "server": {},
-    "student": {}
+    "server": {
+        "internalServerErr": "අභ්‍යන්තර සේවාදායක දෝෂයක්"
+    },
+    "student": {
+        "studentCreated": "ශිෂ්‍ය ගිණුම සාර්ථකව සාදන ලදී",
+        "studentCreationFailed": "ශිෂ්‍ය ගිණුම සෑදීම අසාර්ථකයි"
+    }
 }
