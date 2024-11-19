@@ -1,31 +1,31 @@
-import { Column, Entity, ManyToOne, JoinColumn } from 'typeorm'
-import { User } from './user.entity'
-import { Center } from './center.entity'
-import { PreferredMode } from '../enums'
-import { ContactInfo } from './embedded/contact.embedded'
+import { Entity, OneToOne, JoinColumn, Column, ManyToOne } from "typeorm";
+import { PreferredMode } from "../enums";
+import { ContactInfo } from "./embedded/contact.embedded";
+import { User } from "./user.entity";
+import BaseEntity from "./baseEntity";
 
 @Entity()
-export class Student extends User {
-    @Column()
-    school!: string
+export class Student extends BaseEntity{
+    @OneToOne(() => User)
+    @JoinColumn()
+    user: User;
 
     @Column()
-    grade!: string
+    school: string;
 
-    @ManyToOne(() => Center)
-    @JoinColumn({ name: 'centerId' })
-    nearestCenter!: Center
+    @Column()
+    grade: string;
 
     @Column({
         type: 'enum',
         enum: PreferredMode,
         default: PreferredMode.ONSITE
     })
-    preferredMode!: PreferredMode
+    preferredMode: PreferredMode;
 
     @Column(() => ContactInfo)
-    guardian!: ContactInfo
+    guardian: ContactInfo;
 
     @Column(() => ContactInfo)
-    emergencyContact!: ContactInfo
+    emergencyContact: ContactInfo;
 }

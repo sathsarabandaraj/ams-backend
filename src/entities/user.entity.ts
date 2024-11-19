@@ -1,40 +1,75 @@
-import { Column, Entity, TableInheritance } from 'typeorm'
-import BaseEntity from './baseEntity'
-import { Gender } from '../enums'
+import {
+    Entity,
+    Column,
+    JoinColumn,
+    ManyToOne,
+    BeforeInsert,
+    Index,
+} from 'typeorm';
+import { AccoutStatus, Gender, UserType } from '../enums';
+import BaseEntity from './baseEntity';
+import { Center } from './center.entity';
 
-@Entity('users')
-@TableInheritance({ column: { type: "varchar", name: "userType" } })
+const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+@Entity()
 export class User extends BaseEntity {
-    @Column()
-    email!: string
+    @Index()
+    @Column({ unique: true })
+    systemId: string;
 
     @Column()
-    nameInFull!: string
+    email: string;
 
     @Column()
-    firstName!: string
+    nameInFull: string;
 
     @Column()
-    lastName!: string
+    firstName: string;
 
     @Column()
-    address!: string
+    lastName: string;
 
     @Column()
-    contactNo!: string
+    address: string;
+
+    @Column()
+    contactNo: string;
 
     @Column({
         type: 'enum',
         enum: Gender
     })
-    gender!: Gender
+    gender: Gender;
 
     @Column({ type: 'date' })
-    dob!: Date
+    dob: Date;
 
     @Column({ select: false })
-    password!: string
+    password: string;
 
-    @Column({ default: true })
-    isActive!: boolean
+    @Column({ type: 'enum', enum: AccoutStatus })
+    accountStatus: boolean;
+
+    @Column({ type: 'enum', enum: UserType })
+    userType: UserType
+
+    @ManyToOne(() => Center)
+    @JoinColumn({ name: 'centerId' })
+    mainCenter: Center;
+
+    @BeforeInsert()
+    async generateSystemId() {
+        const centerPrefix = this.mainCenter?.code?.toLowerCase() || 'unk';
+        const userType = this.userType === UserType.STUDENT ? 'stu' : 'sta';
+
+        let uniqueId = '';
+        const charactersLength = characters.length;
+
+        for (let i = 0; i < 4; i++) {
+            uniqueId += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+
+        this.systemId = `${centerPrefix}-${userType}-${uniqueId}`;
+    }
 }

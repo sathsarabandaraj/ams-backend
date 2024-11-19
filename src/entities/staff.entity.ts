@@ -1,41 +1,46 @@
-import { Column, Entity } from 'typeorm'
-import { User } from './user.entity'
-import { BankDetails } from './embedded/bank-details.embedded'
-import { CivilStatus } from '../enums'
-import { ContactInfo } from './embedded/contact.embedded'
+import { Entity, OneToOne, JoinColumn, Column } from "typeorm";
+import { CivilStatus } from "../enums";
+import { BankDetails } from "./embedded/bank-details.embedded";
+import { ContactInfo } from "./embedded/contact.embedded";
+import { User } from "./user.entity";
+import BaseEntity from "./baseEntity";
 
 @Entity()
-export class Staff extends User {
+export class Staff extends BaseEntity{
+    @OneToOne(() => User)
+    @JoinColumn()
+    user: User;
+
     @Column()
-    postalCode!: string
+    postalCode: string;
 
     @Column({ unique: true })
-    nicNo!: string
+    nicNo: string;
 
     @Column()
-    nicFrontUrl!: string
+    nicFrontUrl: string;
 
     @Column()
-    nicBackUrl!: string
+    nicBackUrl: string;
 
     @Column({
         type: 'enum',
         enum: CivilStatus
     })
-    civilStatus!: CivilStatus
+    civilStatus: CivilStatus;
 
     @Column(() => ContactInfo)
-    secondaryContact!: ContactInfo
+    secondaryContact: ContactInfo;
 
     @Column(() => BankDetails)
-    bankDetails!: BankDetails
+    bankDetails: BankDetails;
 
     @Column({ default: false })
-    isAdmin!: boolean
+    isAdmin: boolean;
 
     @Column({ default: false })
-    isTeacher!: boolean
+    isTeacher: boolean;
 
     @Column({ default: false })
-    hasApprovedInformation!: boolean
+    hasApprovedInformation: boolean;
 }
