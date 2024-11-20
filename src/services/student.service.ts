@@ -16,16 +16,6 @@ export const createStudent = async (userData: User, studentData: Student): Promi
     await queryRunner.startTransaction()
 
     try {
-        // const existingEmail = await userRepository.findOne({
-        //     where: {
-        //         email: userData.email
-        //     }
-        // })
-
-        // if (existingEmail) {
-        //     throw new Error('user.emailAlreadyExists')
-        // }
-
         // Hash password if provided
         if (userData.password) {
             userData.password = await hash(userData.password, 10)
@@ -57,5 +47,46 @@ export const createStudent = async (userData: User, studentData: Student): Promi
         )
     } finally {
         await queryRunner.release()
+    }
+}
+
+export const getAllStudents = async (pageNumber: number, pageSize: number, order?: string): Promise<{
+    items: Student[]
+    totalItemCount: number
+    statusCode: number
+    message: string
+}> => {
+    const studentRepository = AppDataSource.getRepository(Student)
+    try {
+        const [students, total] = await studentRepository.findAndCount({
+            order: {
+                created_at: order as 'ASC' | 'DESC' || 'DESC'
+            },
+            relations: ['user'],
+            take: pageSize,
+            skip: pageNumber * pageSize
+        })
+
+        if (students.length === 0) {
+            return {
+                statusCode: 404,
+                items: [],
+                totalItemCount: 0,
+                message: 'student.studentsNotFound'
+            }
+        }
+
+        return {
+            items: students,
+            totalItemCount: total,
+            statusCode: 200,
+            message: 'student.studentsRetrieved'
+        }
+
+    } catch (error) {
+        throw new Error(error instanceof Error
+            ? error.message
+            : 'student.studentsRetrievalFailed'
+        )
     }
 }

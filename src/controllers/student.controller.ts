@@ -1,11 +1,10 @@
 import { Request, Response } from 'express'
 import { Student } from '../entities/student.entity'
-import { createStudent } from '../services/student.service'
-import { ApiResponse } from '../types'
+import { createStudent, getAllStudents } from '../services/student.service'
+import { stat } from 'fs'
 
-export const createStudentHandler = async (req: Request, res: Response): Promise<ApiResponse<Student>> => {
+export const createStudentHandler = async (req: Request, res: Response) => {
     try {
-        // Separate user and student data
         const { user, student } = req.body
         const { createdStudent, statusCode, message } = await createStudent(user, student)
 
@@ -26,33 +25,32 @@ export const createStudentHandler = async (req: Request, res: Response): Promise
 }
 
 
-// export const getAllStudentsHandler = async (req: Request, res: Response): Promise<PaginatedApiResponse<Student>> => {
-//     try {
-//         const pageNumber = parseInt(req.query.pageNumber as string)
-//         const pageSize = parseInt(req.query.pageSize as string)
-        
-//         const { items, totalItemCount, statusCode, message } = await getAllMentors({
-//             pageNumber,
-//             pageSize
-//         })
+export const getAllStudentsHandler = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const pageNumber = parseInt(req.query.pageNumber as string)
+        const pageSize = parseInt(req.query.pageSize as string)
+        const order = req.query.order as string
 
-//         return res.status(statusCode).json({
-//             pageNumber,
-//             pageSize,
-//             totalItemCount,
-//             items,
-//             message
-//         })
+        const students = await getAllStudents(pageNumber, pageSize, order)
 
-//     } catch (error) {
-//         if (error instanceof Error) {
-//             return res.status(400).json({
-//                 error: 'Internal server error',
-//                 message: error.message
-//             })
-//         }
+        return res.status(students.statusCode).json({
+            pageNumber: pageNumber,
+            pageSize: pageSize,
+            totalItemCount: students.totalItemCount,
+            items: students.items,
+            message: req.t('student.studentsRetrieved')
+        })
 
-//         throw error
-//     }
-// }
+
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(400).json({
+                error: req.t(error.name),
+                message: req.t(error.message)
+            })
+        }
+
+        throw error
+    }
+}
 
