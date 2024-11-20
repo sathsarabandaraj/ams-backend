@@ -1,16 +1,14 @@
 import { Request, Response } from 'express'
-import { Student } from '../entities/student.entity'
-import { createStudent, getAllStudents } from '../services/student.service'
-import { stat } from 'fs'
+import { createStudent, getAllStudents, getStudentByUUID } from '../services/student.service'
 
 export const createStudentHandler = async (req: Request, res: Response) => {
     try {
         const { user, student } = req.body
-        const { createdStudent, statusCode, message } = await createStudent(user, student)
+        const feedback = await createStudent(user, student)
 
-        return res.status(statusCode).json({
-            message: req.t(message),
-            data: createdStudent
+        return res.status(feedback.statusCode).json({
+            message: req.t(feedback.message|| 'default.message'),
+            data: feedback.data
         })
     } catch (error) {
         if (error instanceof Error) {
@@ -24,20 +22,19 @@ export const createStudentHandler = async (req: Request, res: Response) => {
     }
 }
 
-
 export const getAllStudentsHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
         const pageNumber = parseInt(req.query.pageNumber as string)
         const pageSize = parseInt(req.query.pageSize as string)
         const order = req.query.order as string
 
-        const students = await getAllStudents(pageNumber, pageSize, order)
+        const feedback = await getAllStudents(pageNumber, pageSize, order)
 
-        return res.status(students.statusCode).json({
-            pageNumber: pageNumber,
-            pageSize: pageSize,
-            totalItemCount: students.totalItemCount,
-            items: students.items,
+        return res.status(feedback.statusCode).json({
+            pageNumber: feedback.items,
+            pageSize: feedback.pageSize,
+            totalItemCount: feedback.totalItemCount,
+            items: feedback.items,
             message: req.t('student.studentsRetrieved')
         })
 
@@ -54,3 +51,23 @@ export const getAllStudentsHandler = async (req: Request, res: Response): Promis
     }
 }
 
+export const getStudentByUUIDHandler = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const studentUUID = req.params.uuid
+        const feedback = await getStudentByUUID(studentUUID)
+
+        return res.status(feedback.statusCode).json({
+            message: req.t(feedback.message || 'default.message'),
+            data: feedback.data
+        })
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(400).json({
+                error: req.t(error.name),
+                message: req.t(error.message)
+            })
+        }
+
+        throw error
+    }
+}

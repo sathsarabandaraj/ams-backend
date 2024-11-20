@@ -1,5 +1,8 @@
 {
     "rootMsg": "AMS Backend API",
+    "default": {
+        "message": "Response message not found"
+    },
     "server": {
         "internalServerErr": "Internal Server Error"
     },
@@ -36,6 +39,9 @@
         "studentCreationFailed": "Student account creation failed",
         "studentsRetrieved": "Students data retrieved successfully",
         "studentsNotFound": "No students found",
-        "studentsRetrievalFailed": "Failed to retrieve students data"
+        "studentsRetrievalFailed": "Failed to retrieve students data",
+        "studentNotFound": "Student not found",
+        "studentRetrieved": "Student data retrieved successfully",
+        "studentRetrievalFailed": "Failed to retrieve student data"
     }
 }

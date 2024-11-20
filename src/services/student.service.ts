@@ -2,12 +2,9 @@ import { User } from '../entities/user.entity'
 import { Student } from '../entities/student.entity'
 import { hash } from 'bcrypt'
 import { AppDataSource } from '../configs/db.config'
+import { IApiResult, IPaginatedApiResult } from '../types'
 
-export const createStudent = async (userData: User, studentData: Student): Promise<{
-    createdStudent: Student
-    statusCode: number
-    message: string
-}> => {
+export const createStudent = async (userData: User, studentData: Student): Promise<IApiResult<Student>> => {
     const userRepository = AppDataSource.getRepository(User)
     const studentRepository = AppDataSource.getRepository(Student)
 
@@ -35,9 +32,9 @@ export const createStudent = async (userData: User, studentData: Student): Promi
         await queryRunner.commitTransaction()
 
         return {
-            createdStudent: savedStudent,
             statusCode: 201,
-            message: 'student.studentCreated'
+            message: 'student.studentCreated',
+            data: savedStudent
         }
     } catch (error) {
         await queryRunner.rollbackTransaction()
@@ -50,12 +47,7 @@ export const createStudent = async (userData: User, studentData: Student): Promi
     }
 }
 
-export const getAllStudents = async (pageNumber: number, pageSize: number, order?: string): Promise<{
-    items: Student[]
-    totalItemCount: number
-    statusCode: number
-    message: string
-}> => {
+export const getAllStudents = async (pageNumber: number, pageSize: number, order?: string): Promise<IPaginatedApiResult<Student>> => {
     const studentRepository = AppDataSource.getRepository(Student)
     try {
         const [students, total] = await studentRepository.findAndCount({
@@ -70,23 +62,57 @@ export const getAllStudents = async (pageNumber: number, pageSize: number, order
         if (students.length === 0) {
             return {
                 statusCode: 404,
-                items: [],
+                message: 'student.studentsNotFound',
+                pageNumber,
+                pageSize,
                 totalItemCount: 0,
-                message: 'student.studentsNotFound'
+                items: []
             }
         }
 
         return {
-            items: students,
-            totalItemCount: total,
             statusCode: 200,
-            message: 'student.studentsRetrieved'
+            message: 'student.studentsRetrieved',
+            pageNumber,
+            pageSize,
+            totalItemCount: total,
+            items: students,
         }
 
     } catch (error) {
         throw new Error(error instanceof Error
             ? error.message
             : 'student.studentsRetrievalFailed'
+        )
+    }
+}
+
+export const getStudentByUUID = async (studentUUID: string): Promise<IApiResult<Student>> => {
+    const studentRepository = AppDataSource.getRepository(Student)
+    try {
+        const student = await studentRepository.findOne({
+            where: {
+                uuid: studentUUID
+            },
+            relations: ['user']
+        })
+
+        if (!student) {
+            return {
+                statusCode: 404,
+                message: 'student.studentNotFound',
+            }
+        }
+
+        return {
+            statusCode: 200,
+            message: 'student.studentRetrieved',
+            data: student
+        }
+    } catch (error) {
+        throw new Error(error instanceof Error
+            ? error.message
+            : 'student.studentRetrievalFailed'
         )
     }
 }

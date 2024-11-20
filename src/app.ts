@@ -55,7 +55,7 @@ app.get('/', (req, res) => {
     res.send(req.t('rootMsg')); // This should return the translated message
 });
 
-app.use('/api', studentRoutes)
+app.use('/api/student', studentRoutes)
 
 export const startServer = async (port: number): Promise<Express> => {
     try {

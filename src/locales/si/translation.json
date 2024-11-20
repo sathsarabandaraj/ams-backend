@@ -1,5 +1,8 @@
 {
     "rootMsg": "පසුබිම් යෙදුම් ක්‍රමලේඛන අතුරු මුහුණත",
+    "default": {
+        "message": "ප්‍රතිචාර පණිවිඩය හමු නොවීය"
+    },
     "server": {
         "internalServerErr": "අභ්‍යන්තර සේවාදායක දෝෂයක්"
     },
@@ -36,6 +39,9 @@
         "studentCreationFailed": "ශිෂ්‍ය ගිණුම සෑදීම අසාර්ථකයි",
         "studentsRetrieved": "සිසුන්ගේ දත්ත සාර්ථකව ලබා ගන්නා ලදී",
         "studentsNotFound": "සිසුන් හමු නොවීය",
-        "studentsRetrievalFailed": "සිසුන්ගේ දත්ත ලබා ගැනීම අසාර්ථකයි"
+        "studentsRetrievalFailed": "සිසුන්ගේ දත්ත ලබා ගැනීම අසාර්ථකයි",
+        "studentNotFound": "සිසුවා හමු නොවීය",
+        "studentRetrieved": "සිසුවාගේ දත්ත සාර්ථකව ලබා ගන්නා ලදී",
+        "studentRetrievalFailed": "සිසුවාගේ දත්ත ලබා ගැනීම අසාර්ථකයි"
     }
 }
