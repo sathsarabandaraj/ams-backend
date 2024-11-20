@@ -4,9 +4,9 @@ import { UserSchema } from "./user.schema";
 import { ContactInfoSchema } from "./contact-info.schema";
 
 const StudentDataSchema = z.object({
-    school: z.string().min(1, 'School name is required').trim(),
-    grade: z.string().min(1, 'Grade is required').trim(),
-    nearestCenter: z.string().uuid('Invalid Center ID').optional(),
+    school: z.string().min(1, 'zod.schema.schoolRequired').trim(),
+    grade: z.string().min(1, 'zod.schema.gradeRequired').trim(),
+    nearestCenter: z.string().uuid('zod.schema.invalidCenterId').optional(),
     preferredMode: z.nativeEnum(PreferredMode).optional(),
     guardian: ContactInfoSchema.optional(),
     emergencyContact: ContactInfoSchema.optional(),

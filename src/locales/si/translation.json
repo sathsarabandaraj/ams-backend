@@ -3,8 +3,39 @@
     "server": {
         "internalServerErr": "අභ්‍යන්තර සේවාදායක දෝෂයක්"
     },
+    "zod": {
+        "middleware": {
+            "invalidData": "වලංගු නොවන දත්ත"
+        },
+        "schema": {
+            "invalidEmailFormat": "අවලංගු විද්‍යුත් තැපැල් ආකෘතිය",
+            "fullnameRequired": "සම්පූර්ණ නම අවශ්‍ය වේ",
+            "firstNameRequired": "මුල් නම අවශ්‍ය වේ",
+            "lastNameRequired": "අවසාන නම අවශ්‍ය වේ",
+            "addressRequired": "ලිපිනය අවශ්‍ය වේ",
+            "phoneNumberMinLength": "දුරකථන අංකය අවම වශයෙන් ඉලක්කම් 10ක් විය යුතුය",
+            "phoneNumberMaxLength": "දුරකථන අංකය ඉලක්කම් 15 ඉක්මවිය නොහැක",
+            "phoneNumberDigitsOnly": "දුරකථන අංකයේ ඉලක්කම් පමණක් අඩංගු විය යුතුය",
+            "dobInvalidFormat": "උපන් දිනය වලංගු දින ආකෘතියක් විය යුතුය (YYYY-MM-DD)",
+            "dobInThePast": "උපන් දිනය අතීතයේ විය යුතුය",
+            "passwordMinLength": "මුරපදය අවම වශයෙන් අක්ෂර 8ක් විය යුතුය",
+            "passwordMaxLength": "මුරපදය අක්ෂර 32 ඉක්මවිය නොහැක",
+            "passwordLowercaseRequired": "මුරපදයේ කුඩා අකුරු එකක්වත් තිබිය යුතුය",
+            "passwordUppercaseRequired": "මුරපදයේ කැපිටල් අකුරු එකක්වත් තිබිය යුතුය",
+            "passwordNumberRequired": "මුරපදයේ අංකයක් අඩංගු විය යුතුය",
+            "passwordSpecialCharRequired": "මුරපදයේ විශේෂ අක්ෂරයක් අඩංගු විය යුතුය",
+            "schoolRequired": "පාසලේ නම අවශ්‍ය වේ",
+            "gradeRequired": "ශ්‍රේණිය අවශ්‍ය වේ",
+            "invalidCenterId": "වලංගු මධ්‍යස්ථානයක් තෝරන්න",
+            "paginationOrderInvalid": "වලංගු පිරිශීලකයක්. 'ASC' හෝ 'DESC' වෙනස් විය යුතුය",
+            "nameRequired": "නම අවශ්‍ය වේ"
+        }
+    },
     "student": {
         "studentCreated": "ශිෂ්‍ය ගිණුම සාර්ථකව සාදන ලදී",
-        "studentCreationFailed": "ශිෂ්‍ය ගිණුම සෑදීම අසාර්ථකයි"
+        "studentCreationFailed": "ශිෂ්‍ය ගිණුම සෑදීම අසාර්ථකයි",
+        "studentsRetrieved": "සිසුන්ගේ දත්ත සාර්ථකව ලබා ගන්නා ලදී",
+        "studentsNotFound": "සිසුන් හමු නොවීය",
+        "studentsRetrievalFailed": "සිසුන්ගේ දත්ත ලබා ගැනීම අසාර්ථකයි"
     }
 }

@@ -3,8 +3,39 @@
     "server": {
         "internalServerErr": "Internal Server Error"
     },
+    "zod": {
+        "middleware": {
+            "invalidData": "Invalid data"
+        },
+        "schema": {
+            "invalidEmailFormat": "Invalid email format",
+            "fullnameRequired": "Full name is required",
+            "firstNameRequired": "First name is required",
+            "lastNameRequired": "Last name is required",
+            "addressRequired": "Address is required",
+            "phoneNumberMinLength": "Phone number must be at least 10 digits",
+            "phoneNumberMaxLength": "Phone number must not exceed 15 digits",
+            "phoneNumberDigitsOnly": "Phone number must contain only digits",
+            "dobInvalidFormat": "Date of birth must be a valid date format (YYYY-MM-DD)",
+            "dobInThePast": "Date of birth must be in the past",
+            "passwordMinLength": "Password must be at least 8 characters",
+            "passwordMaxLength": "Password must not exceed 32 characters",
+            "passwordLowercaseRequired": "Password must contain at least one lowercase letter",
+            "passwordUppercaseRequired": "Password must contain at least one uppercase letter",
+            "passwordNumberRequired": "Password must contain at least one number",
+            "passwordSpecialCharRequired": "Password must contain at least one special character",
+            "schoolRequired": "School name is required",
+            "gradeRequired": "Grade is required",
+            "invalidCenterId": "Invalid Center ID",
+            "paginationOrderInvalid": "Invalid pagination order. Must be 'ASC' or 'DESC'",
+            "nameRequired": "Name is required"
+        }
+    },
     "student": {
         "studentCreated": "Student account created successfully",
-        "studentCreationFailed": "Failed to create student"
+        "studentCreationFailed": "Student account creation failed",
+        "studentsRetrieved": "Students data retrieved successfully",
+        "studentsNotFound": "No students found",
+        "studentsRetrievalFailed": "Failed to retrieve students data"
     }
 }

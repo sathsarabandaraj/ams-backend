@@ -11,14 +11,32 @@ export const requestBodyValidator = <T extends ZodSchema>(schema: T) => {
             schema.parse(dataToValidate);
             next(); // If validation passes, proceed to the next middleware/route handler
         } catch (err) {
-            console.log(err); // Log the error for debugging
             if (err instanceof ZodError) {
                 const errorMessages = err.errors.map((issue) => ({
-                    message: `${issue.path.join('.')} : ${issue.message}`,
+                    message: `${issue.path.join('.')} : ${req.t(issue.message)}`,
                 }));
-                return res.status(400).json({ error: 'Invalid data', details: errorMessages });
+                return res.status(400).json({ error: req.t('zod.middleware.invalidData'), details: errorMessages });
             }
-            return res.status(500).json({ error: 'Internal server error' });
+            return res.status(500).json({ error: req.t('server.internalServerErr') });
         }
     };
 };
+
+export const requestQueryValidator = <T extends ZodSchema>(schema: T) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+        try {
+            schema.parse(req.query)
+            next()
+        } catch (err) {
+            if (err instanceof ZodError) {
+                const errorMessages = err.errors.map((issue) => ({
+                    message: `${issue.path.join('.')} is ${req.t('issue.message')}`
+                }))
+                return res
+                    .status(400)
+                    .json({ error: req.t('zod.middleware.invalidData'), details: errorMessages })
+            }
+            return res.status(500).json({ error: req.t('server.internalServerErr') })
+        }
+    }
+}
