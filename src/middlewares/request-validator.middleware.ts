@@ -30,7 +30,7 @@ export const requestQueryValidator = <T extends ZodSchema>(schema: T) => {
         } catch (err) {
             if (err instanceof ZodError) {
                 const errorMessages = err.errors.map((issue) => ({
-                    message: `${issue.path.join('.')} is ${req.t('issue.message')}`
+                    message: `${issue.path.join('.')} is ${req.t(issue.message)}`
                 }))
                 return res
                     .status(400)

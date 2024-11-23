@@ -42,6 +42,8 @@
         "studentsRetrievalFailed": "Failed to retrieve students data",
         "studentNotFound": "Student not found",
         "studentRetrieved": "Student data retrieved successfully",
-        "studentRetrievalFailed": "Failed to retrieve student data"
+        "studentRetrievalFailed": "Failed to retrieve student data",
+        "studentUpdated": "Student data updated successfully",
+        "studentUpdateFailed": "Failed to update student data"
     }
 }

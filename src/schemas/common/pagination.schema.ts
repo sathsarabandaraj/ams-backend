@@ -3,7 +3,7 @@ import { z } from 'zod'
 const ValidOrderValues = ["ASC", "DESC"] as const;
 
 export const PaginationSchema = z.object({
-    pageNumber: z.coerce.number().int().positive(),
+    pageNumber: z.coerce.number().int().nonnegative(),
     pageSize: z.coerce.number().int().positive().max(100),
     order: z.string()
         .optional()

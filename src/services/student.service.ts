@@ -2,7 +2,7 @@ import { User } from '../entities/user.entity'
 import { Student } from '../entities/student.entity'
 import { hash } from 'bcrypt'
 import { AppDataSource } from '../configs/db.config'
-import { IApiResult, IPaginatedApiResult } from '../types'
+import { IApiResult, IPaginatedApiResult, IStudentUpdate } from '../types'
 
 export const createStudent = async (userData: User, studentData: Student): Promise<IApiResult<Student>> => {
     const userRepository = AppDataSource.getRepository(User)
@@ -114,5 +114,59 @@ export const getStudentByUUID = async (studentUUID: string): Promise<IApiResult<
             ? error.message
             : 'student.studentRetrievalFailed'
         )
+    }
+}
+
+export const updateStudent = async (
+    studentUUID: string,
+    studentUpdates: Partial<IStudentUpdate>
+): Promise<IApiResult<Student>> => {
+    const userRepository = AppDataSource.getRepository(User)
+    const studentRepository = AppDataSource.getRepository(Student)
+
+    const queryRunner = AppDataSource.createQueryRunner()
+    await queryRunner.connect()
+    await queryRunner.startTransaction()
+
+    try {
+        // Find the student by UUID
+        const student = await studentRepository.findOne({
+            where: { uuid: studentUUID },
+            relations: ['user']
+        })
+
+        if (!student) {
+            return {
+                statusCode: 404,
+                message: 'student.studentNotFound'
+            }
+        }
+        const userUpdates = studentUpdates.user
+
+        if (userUpdates) {
+            Object.assign(student.user, userUpdates)
+            await userRepository.save(student.user)
+        }
+
+        if (studentUpdates) {
+            Object.assign(student, studentUpdates)
+            await studentRepository.save(student)
+        }
+
+        await queryRunner.commitTransaction()
+
+        return {
+            statusCode: 200,
+            message: 'student.studentUpdated',
+            data: student
+        }
+    } catch (error) {
+        await queryRunner.rollbackTransaction()
+        throw new Error(error instanceof Error
+            ? error.message
+            : 'student.studentUpdateFailed'
+        )
+    } finally {
+        await queryRunner.release()
     }
 }

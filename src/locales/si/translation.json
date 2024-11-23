@@ -42,6 +42,8 @@
         "studentsRetrievalFailed": "සිසුන්ගේ දත්ත ලබා ගැනීම අසාර්ථකයි",
         "studentNotFound": "සිසුවා හමු නොවීය",
         "studentRetrieved": "සිසුවාගේ දත්ත සාර්ථකව ලබා ගන්නා ලදී",
-        "studentRetrievalFailed": "සිසුවාගේ දත්ත ලබා ගැනීම අසාර්ථකයි"
+        "studentRetrievalFailed": "සිසුවාගේ දත්ත ලබා ගැනීම අසාර්ථකයි",
+        "studentUpdated": "සිසුවා සාර්ථකව යාවත්කාල කරන ලදී",
+        "studentUpdateFailed": "සිසුවා යාවත්කාල කිරීම අසාර්ථකයි"
     }
 }

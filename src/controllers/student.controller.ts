@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
-import { createStudent, getAllStudents, getStudentByUUID } from '../services/student.service'
+import { createStudent, getAllStudents, getStudentByUUID, updateStudent } from '../services/student.service'
+import { IStudentUpdate } from '../types'
 
 export const createStudentHandler = async (req: Request, res: Response) => {
     try {
@@ -7,7 +8,7 @@ export const createStudentHandler = async (req: Request, res: Response) => {
         const feedback = await createStudent(user, student)
 
         return res.status(feedback.statusCode).json({
-            message: req.t(feedback.message|| 'default.message'),
+            message: req.t(feedback.message || 'default.message'),
             data: feedback.data
         })
     } catch (error) {
@@ -63,6 +64,29 @@ export const getStudentByUUIDHandler = async (req: Request, res: Response): Prom
     } catch (error) {
         if (error instanceof Error) {
             return res.status(400).json({
+                error: req.t(error.name),
+                message: req.t(error.message)
+            })
+        }
+
+        throw error
+    }
+}
+
+export const updateStudentController = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const studentUUID = req.params.uuid
+        const payload: IStudentUpdate = req.body
+
+        const feedback = await updateStudent(studentUUID, payload || {})
+
+        return res.status(feedback.statusCode).json({
+            message: feedback.message || 'default.message',
+            data: feedback.data
+        })
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).json({
                 error: req.t(error.name),
                 message: req.t(error.message)
             })
