@@ -49,7 +49,7 @@ export class User extends BaseEntity {
     password: string;
 
     @Column({ type: 'enum', enum: AccoutStatus })
-    accountStatus: boolean;
+    accountStatus: AccoutStatus;
 
     @Column({ type: 'enum', enum: UserType })
     userType: UserType

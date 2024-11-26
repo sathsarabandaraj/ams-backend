@@ -3,6 +3,7 @@ import { Student } from '../entities/student.entity'
 import { hash } from 'bcrypt'
 import { AppDataSource } from '../configs/db.config'
 import { IApiResult, IPaginatedApiResult, IStudentUpdate } from '../types'
+import { AccoutStatus } from '../enums'
 
 export const createStudent = async (userData: User, studentData: Student): Promise<IApiResult<Student>> => {
     const userRepository = AppDataSource.getRepository(User)
@@ -169,4 +170,48 @@ export const updateStudent = async (
     } finally {
         await queryRunner.release()
     }
+}
+
+export const deleteStudent = async (studentUUID: string): Promise<IApiResult<Student>> => {
+        const queryRunner = AppDataSource.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+
+        try {
+            const studentRepository = AppDataSource.getRepository(Student);
+            const userRepository = AppDataSource.getRepository(User);
+
+            const student = await studentRepository.findOne({
+                where: { uuid: studentUUID },
+                relations: ['user']
+            });
+
+            if (!student) {
+                return {
+                    statusCode: 404,
+                    message: 'student.studentNotFound',
+                };
+            }
+            
+            await studentRepository.remove(student);
+
+            if (student.user) {
+                await userRepository.remove(student.user);
+            }
+            
+            await queryRunner.commitTransaction();
+
+            return {
+                statusCode: 204,
+                message: 'student.studentDeleted',
+            };
+        } catch (error) {
+            await queryRunner.rollbackTransaction();
+            throw new Error(error instanceof Error
+                ? error.message
+                : 'student.studentDeletionFailed'
+            );
+        } finally {
+            await queryRunner.release();
+        }
 }

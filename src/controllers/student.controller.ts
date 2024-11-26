@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { createStudent, getAllStudents, getStudentByUUID, updateStudent } from '../services/student.service'
+import { createStudent, deleteStudent, getAllStudents, getStudentByUUID, updateStudent } from '../services/student.service'
 import { IStudentUpdate } from '../types'
 
 export const createStudentHandler = async (req: Request, res: Response) => {
@@ -36,7 +36,7 @@ export const getAllStudentsHandler = async (req: Request, res: Response): Promis
             pageSize: feedback.pageSize,
             totalItemCount: feedback.totalItemCount,
             items: feedback.items,
-            message: req.t('student.studentsRetrieved')
+            message: req.t(feedback.message || 'default.message')
         })
 
 
@@ -81,7 +81,28 @@ export const updateStudentController = async (req: Request, res: Response): Prom
         const feedback = await updateStudent(studentUUID, payload || {})
 
         return res.status(feedback.statusCode).json({
-            message: feedback.message || 'default.message',
+            message: req.t(feedback.message || 'default.message'),
+            data: feedback.data
+        })
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).json({
+                error: req.t(error.name),
+                message: req.t(error.message)
+            })
+        }
+
+        throw error
+    }
+}
+
+export const deleteStudentController = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const studentUUID = req.params.uuid
+        const feedback = await deleteStudent(studentUUID)
+
+        return res.status(feedback.statusCode).json({
+            message: req.t(feedback.message || 'default.message'),
             data: feedback.data
         })
     } catch (error) {

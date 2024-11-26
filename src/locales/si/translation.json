@@ -44,6 +44,8 @@
         "studentRetrieved": "සිසුවාගේ දත්ත සාර්ථකව ලබා ගන්නා ලදී",
         "studentRetrievalFailed": "සිසුවාගේ දත්ත ලබා ගැනීම අසාර්ථකයි",
         "studentUpdated": "සිසුවා සාර්ථකව යාවත්කාල කරන ලදී",
-        "studentUpdateFailed": "සිසුවා යාවත්කාල කිරීම අසාර්ථකයි"
+        "studentUpdateFailed": "සිසුවා යාවත්කාල කිරීම අසාර්ථකයි",
+        "studentDeleted": "ශිෂ්‍ය ගිණුම සාර්ථකව මකා දමන ලදී",
+        "studentDeletionFailed": "ශිෂ්‍ය ගිණුම මකා දැමීම අසාර්ථකයි"
     }
 }
