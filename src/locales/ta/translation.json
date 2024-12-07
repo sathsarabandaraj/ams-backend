@@ -1,0 +1,51 @@
+{
+    "rootMsg": "பின்னணி பயன்பாட்டு குறியீட்டு இடைமுகம்",
+    "default": {
+        "message": "பதிலளிப்பு செய்தி கிடைக்கவில்லை"
+    },
+    "server": {
+        "internalServerErr": "உள்ளமைவான சேவையக பிழை"
+    },
+    "zod": {
+        "middleware": {
+            "invalidData": "செல்லுபடியாகாத தரவுகள்"
+        },
+        "schema": {
+            "invalidEmailFormat": "செல்லுபடியாகாத மின்னஞ்சல் வடிவம்",
+            "fullnameRequired": "முழு பெயர் தேவை",
+            "firstNameRequired": "முதல் பெயர் தேவை",
+            "lastNameRequired": "கடைசி பெயர் தேவை",
+            "addressRequired": "முகவரி தேவை",
+            "phoneNumberMinLength": "தொலைபேசி எண்ணில் குறைந்தது 10 எண்கள் இருக்க வேண்டும்",
+            "phoneNumberMaxLength": "தொலைபேசி எண் 15 எண்களை மீறக்கூடாது",
+            "phoneNumberDigitsOnly": "தொலைபேசி எண்ணில் எண்கள் மட்டுமே இருக்க வேண்டும்",
+            "dobInvalidFormat": "பிறந்த தேதி செல்லுபடியாகும் தேதி வடிவமாக இருக்க வேண்டும் (YYYY-MM-DD)",
+            "dobInThePast": "பிறந்த தேதி கடந்த காலத்தில் இருக்க வேண்டும்",
+            "passwordMinLength": "கடவுச்சொல் குறைந்தது 8 எழுத்துகள் இருக்க வேண்டும்",
+            "passwordMaxLength": "கடவுச்சொல் 32 எழுத்துகளை மீறக்கூடாது",
+            "passwordLowercaseRequired": "கடவுச்சொலில் குறைந்தது ஒரு சிறு எழுத்து இருக்க வேண்டும்",
+            "passwordUppercaseRequired": "கடவுச்சொலில் குறைந்தது ஒரு பெரிய எழுத்து இருக்க வேண்டும்",
+            "passwordNumberRequired": "கடவுச்சொலில் ஒரு எண் இருக்க வேண்டும்",
+            "passwordSpecialCharRequired": "கடவுச்சொலில் ஒரு சிறப்பு எழுத்து இருக்க வேண்டும்",
+            "schoolRequired": "பள்ளியின் பெயர் தேவை",
+            "gradeRequired": "தரா தேவை",
+            "invalidCenterId": "செல்லுபடியாகும் மையத்தை தேர்வு செய்யவும்",
+            "paginationOrderInvalid": "'ASC' அல்லது 'DESC' ஆக மாற்றப்பட வேண்டிய செல்லுபடியாகும் வரிசை.",
+            "nameRequired": "பெயர் தேவை"
+        }
+    },
+    "student": {
+        "studentCreated": "மாணவர் கணக்கு வெற்றிகரமாக உருவாக்கப்பட்டது",
+        "studentCreationFailed": "மாணவர் கணக்கு உருவாக்குவது தோல்வியுற்றது",
+        "studentsRetrieved": "மாணவர்களின் தரவுகள் வெற்றிகரமாக பெறப்பட்டது",
+        "studentsNotFound": "மாணவர்கள் கிடைக்கவில்லை",
+        "studentsRetrievalFailed": "மாணவர்களின் தரவுகளை பெறுவது தோல்வியுற்றது",
+        "studentNotFound": "மாணவர் கிடைக்கவில்லை",
+        "studentRetrieved": "மாணவரின் தரவுகள் வெற்றிகரமாக பெறப்பட்டது",
+        "studentRetrievalFailed": "மாணவரின் தரவுகளை பெறுவது தோல்வியுற்றது",
+        "studentUpdated": "மாணவர் வெற்றிகரமாக புதுப்பிக்கப்பட்டது",
+        "studentUpdateFailed": "மாணவர் புதுப்பிப்பது தோல்வியுற்றது",
+        "studentDeleted": "மாணவர் கணக்கு வெற்றிகரமாக அழிக்கப்பட்டது",
+        "studentDeletionFailed": "மாணவர் கணக்கை அழிக்க முடியவில்லை"
+    }
+}

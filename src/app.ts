@@ -26,7 +26,7 @@ i18next
     .use(middleware.LanguageDetector)  // Changed this line
     .init({
         fallbackLng: 'en',
-        supportedLngs: ['en', 'si'],
+        supportedLngs: ['en', 'si', 'ta'],
         lng: 'en',
         ns: ['translation'],
         defaultNS: 'translation',
