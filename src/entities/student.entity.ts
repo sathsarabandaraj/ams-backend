@@ -6,26 +6,25 @@ import BaseEntity from "./baseEntity";
 
 @Entity()
 export class Student extends BaseEntity{
-    @OneToOne(() => User)
-    @JoinColumn()
+    @OneToOne(() => User, user => user.student)
     user: User;
 
     @Column()
-    school: string;
+    school?: string;
 
     @Column()
-    grade: string;
+    grade?: string;
 
     @Column({
         type: 'enum',
         enum: PreferredMode,
         default: PreferredMode.ONSITE
     })
-    preferredMode: PreferredMode;
+    preferredMode?: PreferredMode;
 
     @Column(() => ContactInfo)
-    guardian: ContactInfo;
+    guardian?: ContactInfo;
 
     @Column(() => ContactInfo)
-    emergencyContact: ContactInfo;
+    emergencyContact?: ContactInfo;
 }

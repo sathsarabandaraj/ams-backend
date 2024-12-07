@@ -25,5 +25,5 @@ export const UserSchema = z.object({
         .regex(/(?=.*[@$!%*?&])/, 'zod.schema.passwordSpecialCharRequired'),
     accountStatus: z.nativeEnum(AccoutStatus),
     userType: z.nativeEnum(UserType),
-    mainModule: z.string().uuid('Invalid Center ID').optional(),
+    mainCenter: z.string().uuid('Invalid Center ID').optional(),
 });

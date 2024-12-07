@@ -1,41 +1,37 @@
+import { ContactInfo } from './../schemas/contact-info.schema';
 import { User } from '../entities/user.entity'
-import { Student } from '../entities/student.entity'
 import { hash } from 'bcrypt'
 import { AppDataSource } from '../configs/db.config'
-import { IApiResult, IPaginatedApiResult, IStudentUpdate } from '../types'
-import { AccoutStatus } from '../enums'
+import { IApiResult, IPaginatedApiResult, IUserUpdate } from '../types'
+import { AccoutStatus, UserType } from '../enums'
+import { Student } from '../entities/student.entity';
 
-export const createStudent = async (userData: User, studentData: Student): Promise<IApiResult<Student>> => {
+export const createStudent = async (userData: User): Promise<IApiResult<User>> => {
     const userRepository = AppDataSource.getRepository(User)
-    const studentRepository = AppDataSource.getRepository(Student)
 
     const queryRunner = AppDataSource.createQueryRunner()
     await queryRunner.connect()
     await queryRunner.startTransaction()
 
     try {
-        // Hash password if provided
         if (userData.password) {
             userData.password = await hash(userData.password, 10)
         }
 
-        // Create and save user first
-        const newUser = userRepository.create(userData)
-        const savedUser = await userRepository.save(newUser)
-
-        // Create student with the saved user
-        const newStudent = studentRepository.create({
-            ...studentData,
-            user: savedUser
+        const newUser = userRepository.create({
+            ...userData,
+            userType: UserType.STUDENT,
+            accountStatus: AccoutStatus.ACTIVE
         })
-        const savedStudent = await studentRepository.save(newStudent)
+
+        const savedUser = await userRepository.save(newUser)
 
         await queryRunner.commitTransaction()
 
         return {
             statusCode: 201,
             message: 'student.studentCreated',
-            data: savedStudent
+            data: savedUser
         }
     } catch (error) {
         await queryRunner.rollbackTransaction()
@@ -48,16 +44,22 @@ export const createStudent = async (userData: User, studentData: Student): Promi
     }
 }
 
-export const getAllStudents = async (pageNumber: number, pageSize: number, order?: string): Promise<IPaginatedApiResult<Student>> => {
-    const studentRepository = AppDataSource.getRepository(Student)
+export const getAllStudents = async (pageNumber: number, pageSize: number, order?: string): Promise<IPaginatedApiResult<User>> => {
+    //get all users that are students
+    const userRepository = AppDataSource.getRepository(User)
     try {
-        const [students, total] = await studentRepository.findAndCount({
+        const [students, total] = await userRepository.findAndCount({
+            where: {
+                userType: UserType.STUDENT
+            },
             order: {
                 created_at: order as 'ASC' | 'DESC' || 'DESC'
             },
-            relations: ['user'],
             take: pageSize,
-            skip: pageNumber * pageSize
+            skip: pageNumber * pageSize,
+            relations: {
+                student: true
+            }
         })
 
         if (students.length === 0) {
@@ -88,14 +90,18 @@ export const getAllStudents = async (pageNumber: number, pageSize: number, order
     }
 }
 
-export const getStudentByUUID = async (studentUUID: string): Promise<IApiResult<Student>> => {
-    const studentRepository = AppDataSource.getRepository(Student)
+
+export const getStudentByUUID = async (userUUID: string): Promise<IApiResult<User>> => {
+    const userRepository = AppDataSource.getRepository(User)
     try {
-        const student = await studentRepository.findOne({
+        const student = await userRepository.findOne({
             where: {
-                uuid: studentUUID
+                uuid: userUUID,
+                userType: UserType.STUDENT
             },
-            relations: ['user']
+            relations: {
+                student: true
+            }
         })
 
         if (!student) {
@@ -118,100 +124,134 @@ export const getStudentByUUID = async (studentUUID: string): Promise<IApiResult<
     }
 }
 
-export const updateStudent = async (
-    studentUUID: string,
-    studentUpdates: Partial<IStudentUpdate>
-): Promise<IApiResult<Student>> => {
-    const userRepository = AppDataSource.getRepository(User)
-    const studentRepository = AppDataSource.getRepository(Student)
-
-    const queryRunner = AppDataSource.createQueryRunner()
-    await queryRunner.connect()
-    await queryRunner.startTransaction()
+export const updateStudent = async (userUUID: string, updateData: Partial<User> ): Promise<IApiResult<User>> => {
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
     try {
-        // Find the student by UUID
-        const student = await studentRepository.findOne({
-            where: { uuid: studentUUID },
-            relations: ['user']
-        })
+        const userRepository = AppDataSource.getRepository(User);
 
-        if (!student) {
+        // Find the existing student with specified relations
+        const existingStudent = await userRepository.findOne({
+            where: {
+                uuid: userUUID,
+                userType: UserType.STUDENT
+            },
+            relations: {
+                student: {
+                    guardian: true,
+                    emergencyContact: true
+                }
+            }
+        });
+
+        // Check if student exists
+        if (!existingStudent) {
             return {
                 statusCode: 404,
                 message: 'student.studentNotFound'
+            };
+        }
+
+        // Prepare update object with deep merge
+        const updatedStudentData = {
+            ...existingStudent,
+            ...updateData,
+            // Carefully merge student-specific data
+            student: {
+                ...existingStudent.student,
+                ...(updateData.student || {}),
+                // Handle guardian updates
+                guardian: updateData.student?.guardian
+                    ? {
+                        ...existingStudent.student?.guardian,
+                        ...(updateData.student.guardian || {})
+                    }
+                    : existingStudent.student?.guardian,
+                // Handle emergency contact updates
+                emergencyContact: updateData.student?.emergencyContact
+                    ? {
+                        ...existingStudent.student?.emergencyContact,
+                        ...(updateData.student.emergencyContact || {})
+                    }
+                    : existingStudent.student?.emergencyContact
             }
-        }
-        const userUpdates = studentUpdates.user
+        };
 
-        if (userUpdates) {
-            Object.assign(student.user, userUpdates)
-            await userRepository.save(student.user)
-        }
+        // Perform the update
+        const updatedStudent = await userRepository.save(updatedStudentData);
 
-        if (studentUpdates) {
-            Object.assign(student, studentUpdates)
-            await studentRepository.save(student)
-        }
-
-        await queryRunner.commitTransaction()
+        await queryRunner.commitTransaction();
 
         return {
             statusCode: 200,
             message: 'student.studentUpdated',
-            data: student
-        }
+            data: updatedStudent
+        };
     } catch (error) {
-        await queryRunner.rollbackTransaction()
+        await queryRunner.rollbackTransaction();
         throw new Error(error instanceof Error
             ? error.message
-            : 'student.studentUpdateFailed'
-        )
+                : 'student.studentUpdateFailed'
+        );
     } finally {
-        await queryRunner.release()
+        // Always release the query runner
+        await queryRunner.release();
     }
-}
+};
 
-export const deleteStudent = async (studentUUID: string): Promise<IApiResult<Student>> => {
-        const queryRunner = AppDataSource.createQueryRunner();
-        await queryRunner.connect();
-        await queryRunner.startTransaction();
+export const deleteStudent = async (userUUID: string): Promise<IApiResult<User>> => {
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-        try {
-            const studentRepository = AppDataSource.getRepository(Student);
-            const userRepository = AppDataSource.getRepository(User);
+    try {
+        const userRepository = AppDataSource.getRepository(User);
+        const studentRepository = AppDataSource.getRepository(Student);
 
-            const student = await studentRepository.findOne({
-                where: { uuid: studentUUID },
-                relations: ['user']
-            });
-
-            if (!student) {
-                return {
-                    statusCode: 404,
-                    message: 'student.studentNotFound',
-                };
+        // Find the existing student with specified relations
+        const existingStudent = await userRepository.findOne({
+            where: {
+                uuid: userUUID,
+                userType: UserType.STUDENT
+            },
+            relations: {
+                student: {
+                    guardian: true,
+                    emergencyContact: true
+                }
             }
-            
-            await studentRepository.remove(student);
+        });
 
-            if (student.user) {
-                await userRepository.remove(student.user);
-            }
-            
-            await queryRunner.commitTransaction();
-
+        // Check if student exists
+        if (!existingStudent) {
             return {
-                statusCode: 204,
-                message: 'student.studentDeleted',
+                statusCode: 404,
+                message: 'student.studentNotFound'
             };
-        } catch (error) {
-            await queryRunner.rollbackTransaction();
-            throw new Error(error instanceof Error
-                ? error.message
-                : 'student.studentDeletionFailed'
-            );
-        } finally {
-            await queryRunner.release();
         }
-}
+
+        await userRepository.remove(existingStudent);
+
+        if (existingStudent.student) {
+            await studentRepository.remove(existingStudent.student);
+        }
+
+        await queryRunner.commitTransaction();
+
+        return {
+            statusCode: 200,
+            message: 'student.studentDeleted'
+        };
+    } catch (error) {
+        await queryRunner.rollbackTransaction();
+        throw new Error(error instanceof Error
+            ? error.message
+            : 'student.studentDeletionFailed'
+        );
+    } finally {
+        // Always release the query runner
+        await queryRunner.release();
+    }
+};

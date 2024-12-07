@@ -5,13 +5,19 @@ import {
     ManyToOne,
     BeforeInsert,
     Index,
+    OneToOne,
+    Check,
 } from 'typeorm';
 import { AccoutStatus, Gender, UserType } from '../enums';
 import BaseEntity from './baseEntity';
 import { Center } from './center.entity';
+import { Staff } from './staff.entity';
+import { Student } from './student.entity';
 
 const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
+@Check(`"userType" = '${UserType.STUDENT}' AND "studentId" IS NOT NULL AND "staffId" IS NULL 
+    OR "userType" = '${UserType.STAFF}' AND "staffId" IS NOT NULL AND "studentId" IS NULL`)
 @Entity()
 export class User extends BaseEntity {
     @Index()
@@ -57,6 +63,23 @@ export class User extends BaseEntity {
     @ManyToOne(() => Center)
     @JoinColumn({ name: 'centerId' })
     mainCenter: Center;
+
+    @OneToOne(() => Student, student => student.user, {
+        nullable: true,
+        cascade: true,
+        eager: false
+    })
+    @JoinColumn({ name: 'studentId' })
+    student?: Student;
+
+    @OneToOne(() => Staff, staff => staff.user, {
+        nullable: true,
+        cascade: true,
+        eager: false
+    })
+
+    @JoinColumn({ name: 'staffId' })
+    staff?: Staff;
 
     @BeforeInsert()
     async generateSystemId() {

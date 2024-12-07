@@ -7,8 +7,7 @@ import BaseEntity from "./baseEntity";
 
 @Entity()
 export class Staff extends BaseEntity{
-    @OneToOne(() => User)
-    @JoinColumn()
+    @OneToOne(() => User, user => user.staff)
     user: User;
 
     @Column()

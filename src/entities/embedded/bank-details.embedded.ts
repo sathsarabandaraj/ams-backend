@@ -2,14 +2,14 @@ import { Column } from 'typeorm'
 
 export class BankDetails {
     @Column()
-    accountHolderName!: string
+    accountHolderName?: string
 
     @Column()
-    accountNo!: string
+    accountNo?: string
 
     @Column()
-    bankName!: string
+    bankName?: string
 
     @Column()
-    branchName!: string
+    branchName?: string
 }

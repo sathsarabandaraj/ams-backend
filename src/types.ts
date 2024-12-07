@@ -1,3 +1,4 @@
+import { CivilStatus } from './enums/index';
 export interface IApiResult<T> {
     statusCode: number
     message?: string | 'default.message'
@@ -13,8 +14,9 @@ export interface IPaginatedApiResult<T> {
     items: T[]
 }
 
-interface IUserUpdate {
+export interface IUserUpdate {
     uuid?: string
+    nameInFull?: string
     firstName?: string
     lastName?: string
     email?: string
@@ -23,25 +25,43 @@ interface IUserUpdate {
     gender?: string
     dob?: string
     accountStatus?: string
-    userType?: string
+    userType?: string,
+    mainCenter?: string
+    student?: Partial<IStudentUpdate>
+    Staff?: Partial<IStaffUpdate>
 }
 
-export interface IStudentUpdate {
+interface IStudentUpdate {
     uuid?: string
     school?: string
     grade?: string
     preferredMode?: string
-    guardian?: {
-        name?: string
-        relationship?: string
-        contactNo?: string
-        email?: string
-    }
-    emergencyContact?: {
-        name?: string
-        relationship?: string
-        contactNo?: string
-        email?: string
-    }
-    user?: IUserUpdate
+    emergencyContact?: Partial<IContactInfoUpdate>
+    guardian?: Partial<IContactInfoUpdate>
+}
+
+interface IStaffUpdate {
+    postalCode?: string
+    nicNo?: string
+    nicFrontUrl?: string
+    nicBackUrl?: string
+    civilStatus?: CivilStatus
+    secondaryContact?: Partial<IContactInfoUpdate>
+    bankDetails?: Partial<IBankDetails>
+    isTeacher?: boolean
+    hasApprovedInformation?: boolean
+}
+
+interface IContactInfoUpdate {
+    name?: string
+    relationship?: string
+    address?: string
+    contactNo?: string
+}
+
+interface IBankDetails {
+    accountHoderName?: string
+    accountNo?: string
+    bankName?: string
+    branchName?: string
 }

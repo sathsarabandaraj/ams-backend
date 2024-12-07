@@ -2,13 +2,13 @@ import { Column } from 'typeorm'
 
 export class ContactInfo {
     @Column()
-    name!: string
+    name?: string
 
     @Column()
-    relationship!: string
+    relationship?: string
 
     @Column()
-    contactNo!: string
+    contactNo?: string
 
     @Column({ nullable: true })
     email?: string
