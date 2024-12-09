@@ -31,7 +31,15 @@
             "gradeRequired": "ශ්‍රේණිය අවශ්‍ය වේ",
             "invalidCenterId": "වලංගු මධ්‍යස්ථානයක් තෝරන්න",
             "paginationOrderInvalid": "වලංගු පිරිශීලකයක්. 'ASC' හෝ 'DESC' වෙනස් විය යුතුය",
-            "nameRequired": "නම අවශ්‍ය වේ"
+            "nameRequired": "නම අවශ්‍ය වේ",
+            "accountHolderRequired": "ගියාන් දායකය අවශ්‍ය වේ",
+            "accountNumberRequired": "ගියාන් අංකය අවශ්‍ය වේ",
+            "bankRequired": "බැංක් නම අවශ්‍ය වේ",
+            "branchName": "බැංක් නම කේතය අවශ්‍ය වේ",
+            "postalCodeRequired": "තැපැල් කේතය අවශ්‍ය වේ",
+            "nicNoRequired": "ජා.හැ. අංකය අවශ්‍ය වේ",
+            "nicFrontUrlRequired": "ජා.හැ. ඉලක්කම් පෙන්වන පිටපත අවශ්‍ය වේ",
+            "nicBackUrlRequired": "ජා.හැ. ඉලක්කම් පසුපෙන්වන පිටපත අවශ්‍ය වේ"
         }
     },
     "student": {
@@ -47,5 +55,19 @@
         "studentUpdateFailed": "සිසුවා යාවත්කාල කිරීම අසාර්ථකයි",
         "studentDeleted": "ශිෂ්‍ය ගිණුම සාර්ථකව මකා දමන ලදී",
         "studentDeletionFailed": "ශිෂ්‍ය ගිණුම මකා දැමීම අසාර්ථකයි"
+    },
+    "staff":{
+        "staffCreated": "කාර්යයගේ ගිණුම සාර්ථකව සාදන ලදී",
+        "staffCreationFailed": "කාර්යයගේ ගිණුම සෑදීම අසාර්ථකයි",
+        "staffsRetrieved": "කාර්යයගේ දත්ත සාර්ථකව ලබා ගන්නා ලදී",
+        "staffsNotFound": "කාර්යයගේ හමු නොවීය",
+        "staffsRetrievalFailed": "කාර්යයගේ දත්ත ලබා ගැනීම අසාර්ථකයි",
+        "staffNotFound": "කාර්යයා හමු නොවීය",
+        "staffRetrieved": "කාර්යයාගේ දත්ත සාර්ථකව ලබා ගන්නා ලදී",
+        "staffRetrievalFailed": "කාර්යයාගේ දත්ත ලබා ගැනීම අසාර්ථ",
+        "staffUpdated": "කාර්යයා සාර්ථකව යාවත්කාල කරන ලදී",
+        "staffUpdateFailed": "කාර්යයා යාවත්කාල කිරීම අසාර්ථකයි",
+        "staffDeleted": "කාර්යයගේ ගිණුම සාර්ථකව මකා දමන ලදී",
+        "staffDeletionFailed": "කාර්යයගේ ගිණුම මකා දැමී"
     }
 }

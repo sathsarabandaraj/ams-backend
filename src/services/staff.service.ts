@@ -1,11 +1,11 @@
 import { User } from '../entities/user.entity'
 import { hash } from 'bcrypt'
 import { AppDataSource } from '../configs/db.config'
-import { IApiResult, IPaginatedApiResult, IUserUpdate } from '../types'
+import { IApiResult, IPaginatedApiResult } from '../types'
 import { AccoutStatus, UserType } from '../enums'
-import { Student } from '../entities/student.entity';
+import { Staff } from '../entities/staff.entity'
 
-export const createStudent = async (userData: User): Promise<IApiResult<User>> => {
+export const createStaff = async (userData: User): Promise<IApiResult<User>> => {
     const userRepository = AppDataSource.getRepository(User)
 
     const queryRunner = AppDataSource.createQueryRunner()
@@ -19,7 +19,7 @@ export const createStudent = async (userData: User): Promise<IApiResult<User>> =
 
         const newUser = userRepository.create({
             ...userData,
-            userType: UserType.STUDENT,
+            userType: UserType.STAFF,
             accountStatus: AccoutStatus.ACTIVE
         })
 
@@ -29,27 +29,27 @@ export const createStudent = async (userData: User): Promise<IApiResult<User>> =
 
         return {
             statusCode: 201,
-            message: 'student.studentCreated',
+            message: 'staff.staffCreated',
             data: savedUser
         }
     } catch (error) {
         await queryRunner.rollbackTransaction()
         throw new Error(error instanceof Error
             ? error.message
-            : 'student.studentCreationFailed'
+            : 'staff.staffCreationFailed'
         )
     } finally {
         await queryRunner.release()
     }
 }
 
-export const getAllStudents = async (pageNumber: number, pageSize: number, order?: string): Promise<IPaginatedApiResult<User>> => {
-    //get all users that are students
+export const getAllStaff = async (pageNumber: number, pageSize: number, order?: string): Promise<IPaginatedApiResult<User>> => {
+    //get all users that are staff
     const userRepository = AppDataSource.getRepository(User)
     try {
-        const [students, total] = await userRepository.findAndCount({
+        const [staff, total] = await userRepository.findAndCount({
             where: {
-                userType: UserType.STUDENT
+                userType: UserType.STAFF
             },
             order: {
                 created_at: order as 'ASC' | 'DESC' || 'DESC'
@@ -57,14 +57,14 @@ export const getAllStudents = async (pageNumber: number, pageSize: number, order
             take: pageSize,
             skip: pageNumber * pageSize,
             relations: {
-                student: true
+                staff: true
             }
         })
 
-        if (students.length === 0) {
+        if (staff.length === 0) {
             return {
                 statusCode: 404,
-                message: 'student.studentsNotFound',
+                message: 'staff.staffNotFound',
                 pageNumber,
                 pageSize,
                 totalItemCount: 0,
@@ -74,56 +74,55 @@ export const getAllStudents = async (pageNumber: number, pageSize: number, order
 
         return {
             statusCode: 200,
-            message: 'student.studentsRetrieved',
+            message: 'staff.staffRetrieved',
             pageNumber,
             pageSize,
             totalItemCount: total,
-            items: students,
+            items: staff,
         }
 
     } catch (error) {
         throw new Error(error instanceof Error
             ? error.message
-            : 'student.studentsRetrievalFailed'
+            : 'staff.staffRetrievalFailed'
         )
     }
 }
 
-
-export const getStudentByUUID = async (userUUID: string): Promise<IApiResult<User>> => {
+export const getStaffByUUID = async (userUUID: string): Promise<IApiResult<User>> => {
     const userRepository = AppDataSource.getRepository(User)
     try {
-        const student = await userRepository.findOne({
+        const staff = await userRepository.findOne({
             where: {
                 uuid: userUUID,
-                userType: UserType.STUDENT
+                userType: UserType.STAFF
             },
             relations: {
-                student: true
+                staff: true
             }
         })
 
-        if (!student) {
+        if (!staff) {
             return {
                 statusCode: 404,
-                message: 'student.studentNotFound',
+                message: 'staff.staffNotFound',
             }
         }
 
         return {
             statusCode: 200,
-            message: 'student.studentRetrieved',
-            data: student
+            message: 'staff.staffRetrieved',
+            data: staff
         }
     } catch (error) {
         throw new Error(error instanceof Error
             ? error.message
-            : 'student.studentRetrievalFailed'
+            : 'staff.staffRetrievalFailed'
         )
     }
 }
 
-export const updateStudent = async (userUUID: string, updateData: Partial<User> ): Promise<IApiResult<User>> => {
+export const updateStaff = async (userUUID: string, updateData: Partial<User>): Promise<IApiResult<User>> => {
     const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -131,68 +130,68 @@ export const updateStudent = async (userUUID: string, updateData: Partial<User> 
     try {
         const userRepository = AppDataSource.getRepository(User);
 
-        // Find the existing student with specified relations
-        const existingStudent = await userRepository.findOne({
+        // Find the existing staff with specified relations
+        const existingStaff = await userRepository.findOne({
             where: {
                 uuid: userUUID,
-                userType: UserType.STUDENT
+                userType: UserType.STAFF
             },
             relations: {
-                student: {
-                    guardian: true,
-                    emergencyContact: true
+                staff: {
+                    bankDetails: true,
+                    secondaryContact: true
                 }
             }
         });
 
-        // Check if student exists
-        if (!existingStudent) {
+        // Check if staff exists
+        if (!existingStaff) {
             return {
                 statusCode: 404,
-                message: 'student.studentNotFound'
+                message: 'staff.staffNotFound'
             };
         }
 
         // Prepare update object with deep merge
-        const updatedStudentData = {
-            ...existingStudent,
+        const updatedStaffData = {
+            ...existingStaff,
             ...updateData,
-            // Carefully merge student-specific data
-            student: {
-                ...existingStudent.student,
-                ...(updateData.student || {}),
-                // Handle guardian updates
-                guardian: updateData.student?.guardian
+            // Carefully merge staff-specific data
+            staff: {
+                ...existingStaff.staff,
+                ...(updateData.staff || {}),
+                // Handle secondaryContact updates
+                secondaryContact: updateData.staff?.secondaryContact
                     ? {
-                        ...existingStudent.student?.guardian,
-                        ...(updateData.student.guardian || {})
+                        ...existingStaff.staff?.secondaryContact,
+                        ...(updateData.staff.secondaryContact || {})
                     }
-                    : existingStudent.student?.guardian,
+                    : existingStaff.staff?.secondaryContact,
                 // Handle emergency contact updates
-                emergencyContact: updateData.student?.emergencyContact
+                bankDetails: updateData.staff?.bankDetails
                     ? {
-                        ...existingStudent.student?.emergencyContact,
-                        ...(updateData.student.emergencyContact || {})
+                        ...existingStaff.staff?.bankDetails,
+                        ...(updateData.staff.bankDetails || {})
                     }
-                    : existingStudent.student?.emergencyContact
+                    : existingStaff.staff?.bankDetails
             }
         };
 
         // Perform the update
-        const updatedStudent = await userRepository.save(updatedStudentData);
+        const updatedStaff = await userRepository.save(updatedStaffData);
 
         await queryRunner.commitTransaction();
 
         return {
             statusCode: 200,
-            message: 'student.studentUpdated',
-            data: updatedStudent
+            message: 'staff.staffUpdated',
+            data: updatedStaff
         };
     } catch (error) {
         await queryRunner.rollbackTransaction();
         throw new Error(error instanceof Error
             ? error.message
-                : 'student.studentUpdateFailed'
+            : 'staff.staffUpdateFailed'
         );
     } finally {
         // Always release the query runner
@@ -200,54 +199,54 @@ export const updateStudent = async (userUUID: string, updateData: Partial<User> 
     }
 };
 
-export const deleteStudent = async (userUUID: string): Promise<IApiResult<User>> => {
+export const deleteStaff = async (userUUID: string): Promise<IApiResult<User>> => {
     const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
         const userRepository = AppDataSource.getRepository(User);
-        const studentRepository = AppDataSource.getRepository(Student);
+        const staffRepository = AppDataSource.getRepository(Staff);
 
-        // Find the existing student with specified relations
-        const existingStudent = await userRepository.findOne({
+        // Find the existing staff with specified relations
+        const existingStaff = await userRepository.findOne({
             where: {
                 uuid: userUUID,
-                userType: UserType.STUDENT
+                userType: UserType.STAFF
             },
             relations: {
-                student: {
-                    guardian: true,
-                    emergencyContact: true
+                staff: {
+                    bankDetails: true,
+                    secondaryContact: true
                 }
             }
         });
 
-        // Check if student exists
-        if (!existingStudent) {
+        // Check if staff exists
+        if (!existingStaff) {
             return {
                 statusCode: 404,
-                message: 'student.studentNotFound'
+                message: 'staff.staffNotFound'
             };
         }
 
-        await userRepository.remove(existingStudent);
+        await userRepository.remove(existingStaff);
 
-        if (existingStudent.student) {
-            await studentRepository.remove(existingStudent.student);
+        if (existingStaff.staff) {
+            await staffRepository.remove(existingStaff.staff);
         }
 
         await queryRunner.commitTransaction();
 
         return {
             statusCode: 200,
-            message: 'student.studentDeleted'
+            message: 'staff.staffDeleted'
         };
     } catch (error) {
         await queryRunner.rollbackTransaction();
         throw new Error(error instanceof Error
             ? error.message
-            : 'student.studentDeletionFailed'
+            : 'staff.staffDeletionFailed'
         );
     } finally {
         // Always release the query runner

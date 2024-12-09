@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
-import { createStudent, deleteStudent, getAllStudents, getStudentByUUID, updateStudent } from '../services/student.service'
+import { createStaff, deleteStaff, getAllStaff, getStaffByUUID, updateStaff } from "../services/staff.service";
 
-export const createStudentHandler = async (req: Request, res: Response): Promise<Response> => {
+export const createStaffHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { user } = req.body;
 
-        const feedback = await createStudent(user);
+        const feedback = await createStaff(user);
 
         return res.status(feedback.statusCode).json({
             message: req.t(feedback.message || 'default.message'),
@@ -22,14 +22,14 @@ export const createStudentHandler = async (req: Request, res: Response): Promise
         throw error;
     }
 };
- 
-export const getAllStudentsHandler = async (req: Request, res: Response): Promise<Response> => {
+
+export const getAllStaffHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
         const pageNumber = parseInt(req.query.pageNumber as string)
         const pageSize = parseInt(req.query.pageSize as string)
         const order = req.query.order as string
 
-        const feedback = await getAllStudents(pageNumber, pageSize, order)
+        const feedback = await getAllStaff(pageNumber, pageSize, order)
 
         return res.status(feedback.statusCode).json({
             message: req.t(feedback.message || 'default.message'),
@@ -54,10 +54,10 @@ export const getAllStudentsHandler = async (req: Request, res: Response): Promis
     }
 }
 
-export const getStudentByUUIDHandler = async (req: Request, res: Response): Promise<Response> => {
+export const getStaffByUUIDHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
         const userUUID = req.params.uuid
-        const feedback = await getStudentByUUID(userUUID)
+        const feedback = await getStaffByUUID(userUUID)
 
         return res.status(feedback.statusCode).json({
             message: req.t(feedback.message || 'default.message'),
@@ -75,12 +75,12 @@ export const getStudentByUUIDHandler = async (req: Request, res: Response): Prom
     }
 }
 
-export const updateStudentController = async (req: Request, res: Response): Promise<Response> => {
+export const updateStaffController = async (req: Request, res: Response): Promise<Response> => {
     try {
-        const {user} = req.body;
+        const { user } = req.body;
         const userUUID = req.params.uuid
 
-        const feedback = await updateStudent(userUUID, user || {})
+        const feedback = await updateStaff(userUUID, user || {})
 
         return res.status(feedback.statusCode).json({
             message: req.t(feedback.message || 'default.message'),
@@ -99,10 +99,10 @@ export const updateStudentController = async (req: Request, res: Response): Prom
 }
 
 // delete user controller
-export const deleteStudentController = async (req: Request, res: Response): Promise<Response> => {
+export const deleteStaffController = async (req: Request, res: Response): Promise<Response> => {
     try {
         const userUUID = req.params.uuid
-        const feedback = await deleteStudent(userUUID)
+        const feedback = await deleteStaff(userUUID)
 
         return res.status(feedback.statusCode).json({
             message: req.t(feedback.message || 'default.message'),

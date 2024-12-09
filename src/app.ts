@@ -4,6 +4,7 @@ import cors from 'cors'
 import type { Express } from 'express'
 import express from 'express'
 import studentRoutes from './routes/student.route'
+import staffRoutes from './routes/staff.route'
 import { AppDataSource } from './configs/db.config'
 import i18next from 'i18next'
 import path from 'path'
@@ -56,6 +57,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/student', studentRoutes)
+app.use('/api/staff', staffRoutes)
 
 export const startServer = async (port: number): Promise<Express> => {
     try {

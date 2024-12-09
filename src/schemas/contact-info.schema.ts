@@ -7,6 +7,4 @@ export const ContactInfoSchema = z.object({
         .max(15, 'zod.schema.phoneNumberMaxLength')
         .regex(/^\d+$/, 'zod.schema.phoneNumberDigitsOnly'),
     email: z.string().email('zod.schema.invalidEmailFormat').optional(),
-});
-
-export type ContactInfo = z.infer<typeof ContactInfoSchema>;
+}).strict();
