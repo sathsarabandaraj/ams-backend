@@ -4,7 +4,6 @@ import { createStudent, deleteStudent, getAllStudents, getStudentByUUID, updateS
 export const createStudentHandler = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { user } = req.body;
-
         const feedback = await createStudent(user);
 
         return res.status(feedback.statusCode).json({

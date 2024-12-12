@@ -1,14 +1,14 @@
 import path from 'path'
 import { DataSource } from 'typeorm'
-import { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } from './env.config'
+import { POSTGRES_DB_NAME, POSTGRES_HOST, POSTGRES_PASSWORD, POSTGRES_PORT, POSTGRES_USER } from './env.config'
 
 export const AppDataSource = new DataSource({
     type: 'postgres',
-    host: DB_HOST,
-    port: Number(DB_PORT) ?? 5432,
-    username: DB_USER,
-    password: DB_PASSWORD,
-    database: DB_NAME,
+    host: POSTGRES_HOST,
+    port: POSTGRES_PORT ?? 5432,
+    username: POSTGRES_USER,
+    password: POSTGRES_PASSWORD,
+    database: POSTGRES_DB_NAME,
     entities: [path.join(__dirname, '..', '**', '*.entity{.ts,.js}')],
     migrations: ['dist/src/migrations/*.js'],
     logging: false,

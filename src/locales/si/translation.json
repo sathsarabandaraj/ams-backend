@@ -4,7 +4,8 @@
         "message": "ප්‍රතිචාර පණිවිඩය හමු නොවීය"
     },
     "server": {
-        "internalServerErr": "අභ්‍යන්තර සේවාදායක දෝෂයක්"
+        "internalServerErr": "අභ්‍යන්තර සේවාදායක දෝෂයක්",
+        "languageChanged": "භාෂාව සාර්ථකව වෙනස් කරන ලදී"
     },
     "zod": {
         "middleware": {
@@ -39,7 +40,10 @@
             "postalCodeRequired": "තැපැල් කේතය අවශ්‍ය වේ",
             "nicNoRequired": "ජා.හැ. අංකය අවශ්‍ය වේ",
             "nicFrontUrlRequired": "ජා.හැ. ඉලක්කම් පෙන්වන පිටපත අවශ්‍ය වේ",
-            "nicBackUrlRequired": "ජා.හැ. ඉලක්කම් පසුපෙන්වන පිටපත අවශ්‍ය වේ"
+            "nicBackUrlRequired": "ජා.හැ. ඉලක්කම් පසුපෙන්වන පිටපත අවශ්‍ය වේ",
+            "systemIdRequired": "පද්ධති හැඳුනු අංකය අවශ්‍ය වේ",
+            "invalidSystemId": "වලංගු පද්ධති හැඳුනු අංකය",
+            "otpRequired": "OTP අවශ්‍ය වේ"
         }
     },
     "student": {
@@ -56,12 +60,9 @@
         "studentDeleted": "ශිෂ්‍ය ගිණුම සාර්ථකව මකා දමන ලදී",
         "studentDeletionFailed": "ශිෂ්‍ය ගිණුම මකා දැමීම අසාර්ථකයි"
     },
-    "staff":{
+    "staff": {
         "staffCreated": "කාර්යයගේ ගිණුම සාර්ථකව සාදන ලදී",
         "staffCreationFailed": "කාර්යයගේ ගිණුම සෑදීම අසාර්ථකයි",
-        "staffsRetrieved": "කාර්යයගේ දත්ත සාර්ථකව ලබා ගන්නා ලදී",
-        "staffsNotFound": "කාර්යයගේ හමු නොවීය",
-        "staffsRetrievalFailed": "කාර්යයගේ දත්ත ලබා ගැනීම අසාර්ථකයි",
         "staffNotFound": "කාර්යයා හමු නොවීය",
         "staffRetrieved": "කාර්යයාගේ දත්ත සාර්ථකව ලබා ගන්නා ලදී",
         "staffRetrievalFailed": "කාර්යයාගේ දත්ත ලබා ගැනීම අසාර්ථ",
@@ -69,5 +70,18 @@
         "staffUpdateFailed": "කාර්යයා යාවත්කාල කිරීම අසාර්ථකයි",
         "staffDeleted": "කාර්යයගේ ගිණුම සාර්ථකව මකා දමන ලදී",
         "staffDeletionFailed": "කාර්යයගේ ගිණුම මකා දැමී"
+    },
+    "auth": {
+        "invalidCredentials": "වලංගු නොවන ප්‍රතිචාරයක්",
+        "userNotFound": "පරිශීලකයා හමු නොවීය",
+        "accountInactive": "ගිණුම සක්‍රීය නොවේ",
+        "otpSent": "OTP යවන ලදී",
+        "otpSendFailed": "OTP යවන්නේ අසාර්ථකයි",
+        "otpVerified": "OTP සත්‍යාපනය කරන ලදී",
+        "invalidOTP": "වලංගු නොවන OTP",
+        "otpVerificationFailed": "OTP සත්‍යාපනය අසාර්ථකයි",
+        "unauthorized": "අනවසර",
+        "forbidden": "තහනම් කර ඇත",
+        "tokenExpired": "ටෝකනය කල් ඉකුත් විය"
     }
 }

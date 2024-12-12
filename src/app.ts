@@ -5,11 +5,15 @@ import type { Express } from 'express'
 import express from 'express'
 import studentRoutes from './routes/student.route'
 import staffRoutes from './routes/staff.route'
+import authRoutes from './routes/auth.route'
+import type { Request, Response } from 'express'
 import { AppDataSource } from './configs/db.config'
 import i18next from 'i18next'
 import path from 'path'
 import Backend from 'i18next-fs-backend'
-import middleware from 'i18next-http-middleware'  // Changed this import
+import middleware from 'i18next-http-middleware'
+import passport from 'passport'
+import { configurePassport } from './configs/passport.config'
 
 const app = express()
 
@@ -24,40 +28,52 @@ app.use(
 // Initialize i18next
 i18next
     .use(Backend)
-    .use(middleware.LanguageDetector)  // Changed this line
+    .use(middleware.LanguageDetector)
     .init({
+        lng: 'en',
         fallbackLng: 'en',
         supportedLngs: ['en', 'si', 'ta'],
-        lng: 'en',
         ns: ['translation'],
         defaultNS: 'translation',
         backend: {
             loadPath: path.join(__dirname, './locales/{{lng}}/{{ns}}.json'),
         },
         detection: {
-            order: ['cookie', 'header', 'querystring'],
+            order: ['header', 'cookie'],
             caches: ['cookie'],
             lookupQuerystring: 'lng',
             lookupCookie: 'i18next',
-            lookupHeader: 'accept-language',  // Fixed casing here
+            lookupHeader: 'Accept-Language',
         },
         interpolation: {
             escapeValue: false
         },
     });
 
-app.use(middleware.handle(i18next));  // Changed this line
+app.use(middleware.handle(i18next));
 app.use(cookieParser())
 app.use(bodyParser.json())
-app.get('/', (req, res) => {
-    console.log('Current language:', req.language); // Log the current language
-    console.log('Translation for rootMsg:', req.t('rootMsg')); // Log the translation for rootMsg
 
-    res.send(req.t('rootMsg')); // This should return the translated message
+app.use(passport.initialize());
+configurePassport(passport);
+
+app.post('/api/set-language', async (req: Request, res: Response): Promise<void> => {
+    const lang = req.query.lang; // Get the language from query parameter
+    if (lang) {
+        res.cookie('i18next', lang); // Set the language in a cookie
+        return res.redirect(req.get('Referrer') || '/'); // Redirect back to the referring page or home
+    }
+});
+
+app.get('/', (req, res) => {
+    console.log('Current language:', req.language);
+
+    res.send(req.t('rootMsg'));
 });
 
 app.use('/api/student', studentRoutes)
 app.use('/api/staff', staffRoutes)
+app.use('/api/auth', authRoutes)
 
 export const startServer = async (port: number): Promise<Express> => {
     try {

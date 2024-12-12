@@ -29,3 +29,9 @@ export enum AccoutStatus{
     DELETED = 'deleted',
     PENDING = 'pending'
 }
+
+export enum Roles {
+    STUDENT = 'student',
+    STAFF_ADMIN = 'staff-admin',
+    STAFF_NONADMIN = 'staff-nonadmin',
+}

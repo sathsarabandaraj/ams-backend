@@ -1,65 +1,87 @@
 {
-    "rootMsg": "பின்னணி பயன்பாட்டு குறியீட்டு இடைமுகம்",
+    "rootMsg": "AMS பின்தள API",
     "default": {
-        "message": "பதிலளிப்பு செய்தி கிடைக்கவில்லை"
+        "message": "மறுமொழி செய்தி கிடைக்கவில்லை"
     },
     "server": {
-        "internalServerErr": "உள்ளமைவான சேவையக பிழை"
+        "internalServerErr": "உள்ளக சேவை பிழை",
+        "languageChanged": "மொழி வெற்றிகரமாக மாற்றப்பட்டது"
     },
     "zod": {
         "middleware": {
-            "invalidData": "செல்லுபடியாகாத தரவுகள்"
+            "invalidData": "தவறான தரவு"
         },
         "schema": {
-            "invalidEmailFormat": "செல்லுபடியாகாத மின்னஞ்சல் வடிவம்",
+            "invalidEmailFormat": "தவறான மின்னஞ்சல் வடிவம்",
             "fullnameRequired": "முழு பெயர் தேவை",
             "firstNameRequired": "முதல் பெயர் தேவை",
             "lastNameRequired": "கடைசி பெயர் தேவை",
             "addressRequired": "முகவரி தேவை",
-            "phoneNumberMinLength": "தொலைபேசி எண்ணில் குறைந்தது 10 எண்கள் இருக்க வேண்டும்",
-            "phoneNumberMaxLength": "தொலைபேசி எண் 15 எண்களை மீறக்கூடாது",
-            "phoneNumberDigitsOnly": "தொலைபேசி எண்ணில் எண்கள் மட்டுமே இருக்க வேண்டும்",
-            "dobInvalidFormat": "பிறந்த தேதி செல்லுபடியாகும் தேதி வடிவமாக இருக்க வேண்டும் (YYYY-MM-DD)",
-            "dobInThePast": "பிறந்த தேதி கடந்த காலத்தில் இருக்க வேண்டும்",
+            "phoneNumberMinLength": "தொலைபேசி எண் குறைந்தது 10 இலக்கங்களாக இருக்க வேண்டும்",
+            "phoneNumberMaxLength": "தொலைபேசி எண் 15 இலக்கங்களை மீறக்கூடாது",
+            "phoneNumberDigitsOnly": "தொலைபேசி எண் இலக்கங்களையே கொண்டிருக்க வேண்டும்",
+            "dobInvalidFormat": "பிறந்த நாள் சரியான தேதி வடிவில் (YYYY-MM-DD) இருக்க வேண்டும்",
+            "dobInThePast": "பிறந்த நாள் கடந்த காலத்தில் இருக்க வேண்டும்",
             "passwordMinLength": "கடவுச்சொல் குறைந்தது 8 எழுத்துகள் இருக்க வேண்டும்",
             "passwordMaxLength": "கடவுச்சொல் 32 எழுத்துகளை மீறக்கூடாது",
-            "passwordLowercaseRequired": "கடவுச்சொலில் குறைந்தது ஒரு சிறு எழுத்து இருக்க வேண்டும்",
-            "passwordUppercaseRequired": "கடவுச்சொலில் குறைந்தது ஒரு பெரிய எழுத்து இருக்க வேண்டும்",
-            "passwordNumberRequired": "கடவுச்சொலில் ஒரு எண் இருக்க வேண்டும்",
-            "passwordSpecialCharRequired": "கடவுச்சொலில் ஒரு சிறப்பு எழுத்து இருக்க வேண்டும்",
-            "schoolRequired": "பள்ளியின் பெயர் தேவை",
-            "gradeRequired": "தரா தேவை",
-            "invalidCenterId": "செல்லுபடியாகும் மையத்தை தேர்வு செய்யவும்",
-            "paginationOrderInvalid": "'ASC' அல்லது 'DESC' ஆக மாற்றப்பட வேண்டிய செல்லுபடியாகும் வரிசை.",
-            "nameRequired": "பெயர் தேவை"
+            "passwordLowercaseRequired": "கடவுச்சொல் குறைந்தது ஒரு சிறிய எழுத்தை கொண்டிருக்க வேண்டும்",
+            "passwordUppercaseRequired": "கடவுச்சொல் குறைந்தது ஒரு பெரிய எழுத்தை கொண்டிருக்க வேண்டும்",
+            "passwordNumberRequired": "கடவுச்சொல் குறைந்தது ஒரு எண்ணை கொண்டிருக்க வேண்டும்",
+            "passwordSpecialCharRequired": "கடவுச்சொல் குறைந்தது ஒரு சிறப்பு எழுத்தை கொண்டிருக்க வேண்டும்",
+            "schoolRequired": "பள்ளி பெயர் தேவை",
+            "gradeRequired": "தர நிலை தேவை",
+            "invalidCenterId": "தவறான மைய அடையாளம்",
+            "paginationOrderInvalid": "தவறான பக்கம் வரிசை. 'ASC' அல்லது 'DESC' மட்டும் இருக்க வேண்டும்",
+            "nameRequired": "பெயர் தேவை",
+            "accountHolderRequired": "கணக்கு வைத்திருப்பவர் தேவை",
+            "accountNumberRequired": "கணக்கு எண் தேவை",
+            "bankRequired": "வங்கியின் பெயர் தேவை",
+            "branchName": "கிளை பெயர் குறியீடு தேவை",
+            "postalCodeRequired": "தபால் குறியீடு தேவை",
+            "nicNoRequired": "அடையாள அட்டை எண் தேவை",
+            "nicFrontUrlRequired": "அடையாள அட்டையின் முன்னணி படம் தேவை",
+            "nicBackUrlRequired": "அடையாள அட்டையின் பின்புற படம் தேவை",
+            "systemIdRequired": "கணினி அடையாளம் தேவை",
+            "invalidSystemId": "தவறான கணினி அடையாளம்",
+            "otpRequired": "ஒரு முறை கடவுச்சொல் தேவை"
         }
     },
     "student": {
         "studentCreated": "மாணவர் கணக்கு வெற்றிகரமாக உருவாக்கப்பட்டது",
-        "studentCreationFailed": "மாணவர் கணக்கு உருவாக்குவது தோல்வியுற்றது",
-        "studentsRetrieved": "மாணவர்களின் தரவுகள் வெற்றிகரமாக பெறப்பட்டது",
-        "studentsNotFound": "மாணவர்கள் கிடைக்கவில்லை",
-        "studentsRetrievalFailed": "மாணவர்களின் தரவுகளை பெறுவது தோல்வியுற்றது",
+        "studentCreationFailed": "மாணவர் கணக்கு உருவாக்கம் தோல்வியடைந்தது",
+        "studentsRetrieved": "மாணவர் தகவல் வெற்றிகரமாக பெறப்பட்டது",
+        "studentsNotFound": "மாணவர்கள் இல்லை",
+        "studentsRetrievalFailed": "மாணவர் தகவல் பெறுதல் தோல்வியடைந்தது",
         "studentNotFound": "மாணவர் கிடைக்கவில்லை",
-        "studentRetrieved": "மாணவரின் தரவுகள் வெற்றிகரமாக பெறப்பட்டது",
-        "studentRetrievalFailed": "மாணவரின் தரவுகளை பெறுவது தோல்வியுற்றது",
-        "studentUpdated": "மாணவர் வெற்றிகரமாக புதுப்பிக்கப்பட்டது",
-        "studentUpdateFailed": "மாணவர் புதுப்பிப்பது தோல்வியுற்றது",
+        "studentRetrieved": "மாணவர் தகவல் வெற்றிகரமாக பெறப்பட்டது",
+        "studentRetrievalFailed": "மாணவர் தகவல் பெறுதல் தோல்வியடைந்தது",
+        "studentUpdated": "மாணவர் தகவல் வெற்றிகரமாக புதுப்பிக்கப்பட்டது",
+        "studentUpdateFailed": "மாணவர் தகவல் புதுப்பித்தல் தோல்வியடைந்தது",
         "studentDeleted": "மாணவர் கணக்கு வெற்றிகரமாக அழிக்கப்பட்டது",
-        "studentDeletionFailed": "மாணவர் கணக்கை அழிக்க முடியவில்லை"
+        "studentDeletionFailed": "மாணவர் கணக்கு அழித்தல் தோல்வியடைந்தது"
     },
-    "staff":{
+    "staff": {
         "staffCreated": "பணியாளர் கணக்கு வெற்றிகரமாக உருவாக்கப்பட்டது",
-        "staffCreationFailed": "பணியாளர் கணக்கு உருவாக்குவது தோல்வியுற்றது",
-        "staffsRetrieved": "பணியாளர்களின் தரவுகள் வெற்றிகரமாக பெறப்பட்டது",
-        "staffsNotFound": "பணியாளர்கள் கிடைக்கவில்லை",
-        "staffsRetrievalFailed": "பணியாளர்களின் தரவுகளை பெறுவது தோல்வியுற்றது",
+        "staffCreationFailed": "பணியாளர் கணக்கு உருவாக்கம் தோல்வியடைந்தது",
         "staffNotFound": "பணியாளர் கிடைக்கவில்லை",
-        "staffRetrieved": "பணியாளரின் தரவுகள் வெற்றிகரமாக பெறப்பட்டது",
-        "staffRetrievalFailed": "பணியாளரின் தரவுகளை பெறுவது தோல்வியுற",
-        "staffUpdated": "பணியாளர் வெற்றிகரமாக புதுப்பிக்கப்பட்டது",
-        "staffUpdateFailed": "பணியாளர் புதுப்பிப்பது தோல்வியுற்றது",
+        "staffRetrieved": "பணியாளர் தகவல் வெற்றிகரமாக பெறப்பட்டது",
+        "staffRetrievalFailed": "பணியாளர் தகவல் பெறுதல் தோல்வியடைந்தது",
+        "staffUpdated": "பணியாளர் தகவல் வெற்றிகரமாக புதுப்பிக்கப்பட்டது",
+        "staffUpdateFailed": "பணியாளர் தகவல் புதுப்பித்தல் தோல்வியடைந்தது",
         "staffDeleted": "பணியாளர் கணக்கு வெற்றிகரமாக அழிக்கப்பட்டது",
-        "staffDeletionFailed": "பணியாளர் கணக்கை அழிக்க மு"
+        "staffDeletionFailed": "பணியாளர் கணக்கு அழித்தல் தோல்வியடைந்தது"
+    },
+    "auth": {
+        "invalidCredentials": "தவறான அங்கீகார விவரங்கள்",
+        "userNotFound": "பயனர் கிடைக்கவில்லை",
+        "accountInactive": "கணக்கு செயலற்றுள்ளது",
+        "otpSent": "ஒரு முறை கடவுச்சொல் வெற்றிகரமாக அனுப்பப்பட்டது",
+        "otpSendFailed": "ஒரு முறை கடவுச்சொல் அனுப்புதல் தோல்வியடைந்தது",
+        "otpVerified": "ஒரு முறை கடவுச்சொல் வெற்றிகரமாக சரிபார்க்கப்பட்டது",
+        "invalidOTP": "தவறான ஒரு முறை கடவுச்சொல்",
+        "otpVerificationFailed": "ஒரு முறை கடவுச்சொல் சரிபார்ப்பு தோல்வியடைந்தது",
+        "unauthorized": "அங்கீகாரம் இல்லை",
+        "forbidden": "தடை செய்யப்பட்டது",
+        "tokenExpired": "கடவுச்சொல் காலாவதியானது"
     }
 }

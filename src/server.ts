@@ -1,11 +1,9 @@
 import startServer from './app'
 import { SERVER_PORT } from './configs/env.config'
 
-const port = SERVER_PORT as number
-
 async function start(): Promise<void> {
     try {
-        await startServer(port)
+        await startServer(SERVER_PORT)
         console.log('Server started!')
     } catch (err) {
         console.error('Something went wrong!', err)

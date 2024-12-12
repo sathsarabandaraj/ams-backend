@@ -4,7 +4,8 @@
         "message": "Response message not found"
     },
     "server": {
-        "internalServerErr": "Internal Server Error"
+        "internalServerErr": "Internal Server Error",
+        "languageChanged": "Language changed successfully"
     },
     "zod": {
         "middleware": {
@@ -39,7 +40,10 @@
             "postalCodeRequired": "Postal code is required",
             "nicNoRequired": "NIC number is required",
             "nicFrontUrlRequired": "NIC front image is required",
-            "nicBackUrlRequired": "NIC back image is required"
+            "nicBackUrlRequired": "NIC back image is required",
+            "systemIdRequired": "System ID is required",
+            "invalidSystemId": "Invalid system ID",
+            "otpRequired": "OTP is required"
         }
     },
     "student": {
@@ -66,5 +70,18 @@
         "staffUpdateFailed": "Failed to update staff data",
         "staffDeleted": "Staff account deleted successfully",
         "staffDeletionFailed": "Failed to delete staff account"
+    },
+    "auth": {
+        "invalidCredentials": "Invalid credentials",
+        "userNotFound": "User not found",
+        "accountInactive": "Account is inactive",
+        "otpSent": "OTP sent successfully",
+        "otpSendFailed": "Failed to send OTP",
+        "otpVerified": "OTP verified successfully",
+        "invalidOTP": "Invalid OTP",
+        "otpVerificationFailed": "Failed to verify OTP",
+        "unauthorized": "Unauthorized",
+        "forbidden": "Forbidden",
+        "tokenExpired": "Token expired"
     }
 }
