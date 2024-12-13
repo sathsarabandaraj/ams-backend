@@ -20,14 +20,15 @@ export const JWT_EXPIRY = process.env.JWT_EXPIRY ?? '1d'
 
 // AWS SES Config
 export const AWS_SES_REGION = process.env.AWS_SES_REGION
-export const AWS_SES_ACCESS_KEY_ID = process.env.AWS_SES_ACCESS_KEY_ID
-export const AWS_SES_SECRET_ACCESS_KEY = process.env.AWS_SES_SECRET_ACCESS_KEY
-export const AWS_SES_EMAIL = process.env.AWS_SES_EMAIL
+export const AWS_SES_ACCESS_KEY_ID = process.env.AWS_SES_ACCESS_KEY_ID ?? ''
+export const AWS_SES_SECRET_ACCESS_KEY = process.env.AWS_SES_SECRET_ACCESS_KEY ?? ''
+export const AWS_SES_SENDER_EMAIL = process.env.AWS_SES_SENDER_EMAIL
 
 // Server Config
-export const SERVER_PORT = parseInt(process.env.SERVER_PORT ?? '3000')
 export const APP_URL = process.env.APP_URL
+export const API_URL = process.env.API_URL
+export const SERVER_PORT = parseInt(process.env.SERVER_PORT ?? '3000')
 export const OTP_EXPIRY = parseInt(process.env.OTP_EXPIRY ?? '300')
-
+export const PLATFORM_NAME = process.env.PLATFORM_NAME ?? 'ACME INC.'
 // Node Config
 export const NODE_ENV = process.env.NODE_ENV ?? 'development'

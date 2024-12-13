@@ -62,6 +62,8 @@ app.use(bodyParser.json())
 app.use(passport.initialize())
 configurePassport(passport)
 
+app.use('/static', express.static(path.join(__dirname, '../public')))
+
 app.post('/api/set-language', async (req: Request, res: Response) => {
   const lang = req.query.lang // Get the language from query parameter
   if (lang) {
@@ -71,8 +73,6 @@ app.post('/api/set-language', async (req: Request, res: Response) => {
 })
 
 app.get('/', (req, res) => {
-  console.log('Current language:', req.language)
-
   res.send(req.t('rootMsg'))
 })
 

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OTP Verification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      background-color: #ffffff;
+      padding: 20px;
+      max-width: 600px;
+      margin: 30px auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .header-title {
+      display: flex;
+      align-items: center;
+    }
+    .icon {
+      margin-right: 8px;
+    }
+    .badge {
+      background-color: #f3f4f6;
+      color: #6b7280;
+      padding: 4px 8px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: black;
+    }
+    .subtitle {
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+    .otp {
+      background-color: #f3f4f6;
+      padding: 16px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .footer {
+      color: #6b7280;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-title">
+        <img src="<%= imageUrl %>" alt="Logo" class="icon" />
+        <span style="font-size: 18px; font-weight: bold; color: black;"><%= platformName %>.</span>
+      </div>
+      <span class="badge">OTP Verification</span>
+    </div>
+    <h1 class="title">Hello, <%= firstName %></h1>
+    <p class="subtitle">Your one-time password (OTP) is:</p>
+    <div class="otp"><%= otp %></div>
+    <p class="subtitle">Please enter this code to verify your identity.</p>
+  </div>
+</body>
+</html>
