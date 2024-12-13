@@ -1,37 +1,37 @@
 // src/enums/user.enum.ts
 export enum Gender {
-    MALE = 'male',
-    FEMALE = 'female',
-    OTHER = 'other'
+  MALE = 'male',
+  FEMALE = 'female',
+  OTHER = 'other'
 }
 
 export enum CivilStatus {
-    SINGLE = 'single',
-    MARRIED = 'married',
-    DIVORCED = 'divorced',
-    WIDOWED = 'widowed'
+  SINGLE = 'single',
+  MARRIED = 'married',
+  DIVORCED = 'divorced',
+  WIDOWED = 'widowed'
 }
 
 export enum PreferredMode {
-    ONLINE = 'online',
-    ONSITE = 'onsite'
+  ONLINE = 'online',
+  ONSITE = 'onsite'
 }
 
 export enum UserType {
-    STAFF = 'staff',
-    STUDENT = 'student'
+  STAFF = 'staff',
+  STUDENT = 'student'
 }
 
-export enum AccoutStatus{
-    ACTIVE = 'active',
-    INACTIVE = 'inactive',
-    BANNED = 'banned',
-    DELETED = 'deleted',
-    PENDING = 'pending'
+export enum AccoutStatus {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  BANNED = 'banned',
+  DELETED = 'deleted',
+  PENDING = 'pending'
 }
 
 export enum Roles {
-    STUDENT = 'student',
-    STAFF_ADMIN = 'staff-admin',
-    STAFF_NONADMIN = 'staff-nonadmin',
+  STUDENT = 'student',
+  STAFF_ADMIN = 'staff-admin',
+  STAFF_NONADMIN = 'staff-nonadmin'
 }

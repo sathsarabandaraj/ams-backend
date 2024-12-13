@@ -4,24 +4,24 @@ import { ContactInfo } from './embedded/contact.embedded'
 
 @Entity('centers')
 export class Center extends BaseEntity {
-    @Column()
-    name!: string
+  @Column()
+  name!: string
 
-    @Column({ unique: true })
-    code!: string
-        
-    @Column()
-    address!: string
+  @Column({ unique: true })
+  code!: string
 
-    @Column(() => ContactInfo)
-    contactPerson!: ContactInfo
+  @Column()
+  address!: string
 
-    @Column({ nullable: true })
-    description?: string
+  @Column(() => ContactInfo)
+  contactPerson!: ContactInfo
 
-    @Column({ default: true })
-    isActive!: boolean
+  @Column({ nullable: true })
+  description?: string
 
-    @Column({ nullable: true })
-    location?: string
+  @Column({ default: true })
+  isActive!: boolean
+
+  @Column({ nullable: true })
+  location?: string
 }

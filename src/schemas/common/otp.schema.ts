@@ -1,8 +1,9 @@
-import { z } from "zod";
+import { z } from 'zod'
 
-export const OTPSchema = z.string()
-    .min(6, 'zod.schema.otpRequired')
-    .max(6, 'zod.schema.otpRequired')
-    .trim()
+export const OTPSchema = z
+  .string()
+  .min(6, 'zod.schema.otpRequired')
+  .max(6, 'zod.schema.otpRequired')
+  .trim()
 
-export type OTPData = z.infer<typeof OTPSchema>;
+export type OTPData = z.infer<typeof OTPSchema>
