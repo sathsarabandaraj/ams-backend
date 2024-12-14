@@ -21,7 +21,7 @@ redisClient.on('end', () => {
   console.log('Redis connection closed!')
 })
 
-redisClient.on('error', (error) => { 
+redisClient.on('error', (error) => {
   console.error('Redis error:', error)
 })
 

@@ -21,8 +21,9 @@ export const JWT_EXPIRY = process.env.JWT_EXPIRY ?? '1d'
 // AWS SES Config
 export const AWS_SES_REGION = process.env.AWS_SES_REGION
 export const AWS_SES_ACCESS_KEY_ID = process.env.AWS_SES_ACCESS_KEY_ID ?? ''
-export const AWS_SES_SECRET_ACCESS_KEY = process.env.AWS_SES_SECRET_ACCESS_KEY ?? ''
-export const AWS_SES_SENDER_EMAIL = process.env.AWS_SES_SENDER_EMAIL
+export const AWS_SES_SECRET_ACCESS_KEY =
+  process.env.AWS_SES_SECRET_ACCESS_KEY ?? ''
+export const AWS_SES_SENDER_EMAIL = process.env.AWS_SES_SENDER_EMAIL ?? ''
 
 // Server Config
 export const APP_URL = process.env.APP_URL

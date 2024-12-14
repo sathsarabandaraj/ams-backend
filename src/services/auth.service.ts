@@ -8,7 +8,6 @@ import redisClient from '../configs/redis.config'
 import { JWT_SECRET, JWT_EXPIRY, OTP_EXPIRY } from '../configs/env.config'
 import jwt from 'jsonwebtoken'
 import { sendOtpEmail } from '../utils/email.util'
-import { send } from 'process'
 
 export const loginOTP = async (
   systemId: string,
@@ -56,14 +55,17 @@ export const loginOTP = async (
 
     const otp = generateOTP()
     await redisClient.setEx(`otp:${systemId}`, OTP_EXPIRY, otp)
-    const sendEmailResponse = await sendOtpEmail(user.firstName, user.email, otp)
+    const sendEmailResponse = await sendOtpEmail(
+      user.firstName,
+      user.email,
+      otp
+    )
     if (sendEmailResponse.$metadata.httpStatusCode !== 200) {
       return {
         statusCode: 200,
         message: 'auth.otpSent'
       }
-    }
-    else {
+    } else {
       return {
         statusCode: sendEmailResponse.$metadata.httpStatusCode,
         message: 'auth.otpSendFailed'
@@ -71,9 +73,7 @@ export const loginOTP = async (
     }
   } catch (error) {
     throw new Error(
-      error instanceof Error
-        ? error.message
-        : 'auth.otpSendFailed'
+      error instanceof Error ? error.message : 'auth.otpSendFailed'
     )
   }
 }

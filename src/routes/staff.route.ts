@@ -37,14 +37,14 @@ router.get(
 router.get(
   '/:uuid',
   passport.authenticate('jwt', { session: false }),
-  authorize([Roles.STAFF_ADMIN, Roles.STAFF_NONADMIN]),
+  authorize([Roles.STAFF_ADMIN], true),
   getStaffByUUIDHandler
 )
 
 router.put(
   '/:uuid',
   passport.authenticate('jwt', { session: false }),
-  authorize([Roles.STAFF_ADMIN]),
+  authorize([Roles.STAFF_ADMIN], true),
   requestBodyValidator(UpdateStaffSchema),
   updateStaffController
 )
