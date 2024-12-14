@@ -2,7 +2,7 @@ import { Column, Entity } from 'typeorm'
 import BaseEntity from './baseEntity'
 import { ContactInfo } from './embedded/contact.embedded'
 
-@Entity('centers')
+@Entity('center')
 export class Center extends BaseEntity {
   @Column()
   name!: string

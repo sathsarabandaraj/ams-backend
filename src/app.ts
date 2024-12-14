@@ -64,12 +64,6 @@ configurePassport(passport)
 
 app.use('/static', express.static(path.join(__dirname, '../public')))
 
-app.use((req: Request, res: Response) => {
-  res.status(404).json({
-    message: req.t('default.routeNotFound')
-  })
-})
-
 app.post('/api/set-language', async (req: Request, res: Response) => {
   const lang = req.query.lang // Get the language from query parameter
   if (lang) {
@@ -86,6 +80,13 @@ app.use('/api/student', studentRoutes)
 app.use('/api/staff', staffRoutes)
 app.use('/api/auth', authRoutes)
 
+
+app.use((req: Request, res: Response) => {
+  res.status(404).json({
+    message: req.t('default.routeNotFound')
+  })
+})
+
 export const startServer = async (port: number): Promise<Express> => {
   try {
     await AppDataSource.initialize()
@@ -93,7 +94,7 @@ export const startServer = async (port: number): Promise<Express> => {
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`)
     })
-
+    
     return app
   } catch (err) {
     console.log('DB connection was not successful', err)

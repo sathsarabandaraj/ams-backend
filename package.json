@@ -7,14 +7,15 @@
     "start": "ts-node src/server.ts",
     "dev": "nodemon --watch 'src/**/*.ts' --exec ts-node-dev --respawn src/server.ts",
     "build": "tsc",
+    "clean": "rm -rf dist node_modules && npm install",
     "test": "jest",
     "lint": "eslint . --ext .ts --ignore-pattern /src/migrations",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\"",
     "debug": "nodemon --watch 'src/**/*.ts' --exec ts-node-dev  --inspect --respawn src/server.ts",
-    "typeorm:db": "npm run build && npx typeorm -d dist/src/configs/dbConfig.js",
+    "typeorm:db": "npm run build && npx typeorm -d dist/src/configs/db.config.js",
     "migration:generate": "npm run typeorm:db -- migration:generate",
-    "migration:run": "npm run typeorm:db -- migration:run",
+    "migration:run": "npm run typeorm:db -- migration:run -d dist/src/configs/db.config.js",
     "migration:revert": "npm run typeorm:db -- migration:revert",
     "sync:db": "npm run typeorm:db schema:sync",
     "seed": "npx ts-node src/scripts/seed-db.ts",
@@ -70,8 +71,8 @@
     "nodemon": "^2.0.22",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.0",
-    "ts-node": "^10.7.0",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^4.5.2"
+    "typescript": "^4.9.5"
   }
 }
