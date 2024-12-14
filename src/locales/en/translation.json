@@ -1,7 +1,8 @@
 {
     "rootMsg": "AMS Backend API",
     "default": {
-        "message": "Response message not found"
+        "message": "Response message not found",
+        "routeNotFound": "Route not found"
     },
     "server": {
         "internalServerErr": "Internal Server Error",

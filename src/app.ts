@@ -18,7 +18,7 @@ const app = express()
 
 app.use(
   cors({
-    origin: 'http://localhost:*',
+    origin: 'http://localhost:*', // TODO: Change this to the actual frontend URL
     methods: 'GET, HEAD, PUT, PATCH, DELETE',
     credentials: true
   })
@@ -63,6 +63,12 @@ app.use(passport.initialize())
 configurePassport(passport)
 
 app.use('/static', express.static(path.join(__dirname, '../public')))
+
+app.use((req: Request, res: Response) => {
+  res.status(404).json({
+    message: req.t('default.routeNotFound')
+  })
+})
 
 app.post('/api/set-language', async (req: Request, res: Response) => {
   const lang = req.query.lang // Get the language from query parameter
