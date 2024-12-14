@@ -35,3 +35,24 @@ export enum Roles {
   STAFF_ADMIN = 'staff-admin',
   STAFF_NONADMIN = 'staff-nonadmin'
 }
+
+export enum BatchStatus {
+  TO_BE_STARTED = 'to-be-started',
+  ONGOING = 'ongoing',
+  FINISHED = 'finished',
+  STALLED = 'stalled'
+}
+
+export enum ClassStatus {
+  SCHEDULED = 'scheduled',
+  CANCELLED = 'cancelled',
+  COMPLETED = 'completed',
+  IN_PROGRESS = 'in-progress',
+  RESCHEDULED = 'rescheduled'
+}
+
+export enum EnrollmentStatus {
+  ENROLLED = 'enrolled',
+  DROPPED = 'dropped',
+  COMPLETED = 'completed'
+}
