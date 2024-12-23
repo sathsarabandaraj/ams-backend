@@ -5,5 +5,3 @@ export const OTPSchema = z
   .min(6, 'zod.schema.otpRequired')
   .max(6, 'zod.schema.otpRequired')
   .trim()
-
-export type OTPData = z.infer<typeof OTPSchema>

@@ -18,11 +18,11 @@ const app = express()
 
 app.use(
   cors({
-    origin: 'http://localhost:*', // TODO: Change this to the actual frontend URL
-    methods: 'GET, HEAD, PUT, PATCH, DELETE',
-    credentials: true
+    origin: 'http://localhost:3001', // Set to the exact frontend URL
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Allowed methods
+    credentials: true, // Include credentials like cookies if necessary
   })
-)
+);
 
 // Initialize i18next
 i18next
@@ -80,7 +80,6 @@ app.use('/api/student', studentRoutes)
 app.use('/api/staff', staffRoutes)
 app.use('/api/auth', authRoutes)
 
-
 app.use((req: Request, res: Response) => {
   res.status(404).json({
     message: req.t('default.routeNotFound')
@@ -94,7 +93,7 @@ export const startServer = async (port: number): Promise<Express> => {
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`)
     })
-    
+
     return app
   } catch (err) {
     console.log('DB connection was not successful', err)

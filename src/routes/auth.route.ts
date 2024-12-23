@@ -6,6 +6,7 @@ import {
 } from '../controllers/auth.controller'
 import { requestBodyValidator } from '../middlewares/request-validator.middleware'
 import { LoginSchema, OTPVerificationSchema } from '../schemas/auth.schemas'
+import { nextTick } from 'process'
 
 const router = Router()
 

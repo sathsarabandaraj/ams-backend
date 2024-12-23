@@ -68,7 +68,7 @@ export const loginOTP = async (
     } else {
       return {
         statusCode: sendEmailResponse.$metadata.httpStatusCode,
-        message: 'auth.otpSendFailed'
+        message: 'auth.otpSent'
       }
     }
   } catch (error) {
