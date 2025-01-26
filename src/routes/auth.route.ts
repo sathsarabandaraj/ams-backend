@@ -1,12 +1,7 @@
-import { Router } from 'express'
-import {
-  loginOTPHandler,
-  logoutHandler,
-  verifyOTPHandler
-} from '../controllers/auth.controller'
-import { requestBodyValidator } from '../middlewares/request-validator.middleware'
-import { LoginSchema, OTPVerificationSchema } from '../schemas/auth.schemas'
-import { nextTick } from 'process'
+import {Router} from 'express'
+import {loginOTPHandler, logoutHandler, verifyOTPHandler} from '../controllers/auth.controller'
+import {requestBodyValidator} from '../middlewares/request-validator.middleware'
+import {LoginSchema, OTPVerificationSchema} from '../schemas/auth.schemas'
 
 const router = Router()
 

@@ -1,7 +1,7 @@
-import { type Request, type Response } from 'express'
-import { loginOTP, verifyOTP } from '../services/auth.service'
-import { NODE_ENV } from '../configs/env.config'
-import { type IApiResult } from '../types'
+import {type Request, type Response} from 'express'
+import {loginOTP, verifyOTP} from '../services/auth.service'
+import {NODE_ENV} from '../configs/env.config'
+import {type IApiResult} from '../types'
 
 export const loginOTPHandler = async (
   req: Request,
@@ -41,8 +41,8 @@ export const verifyOTPHandler = async (
       res.cookie('auth_token', feedback.data, {
         httpOnly: true,
         secure: NODE_ENV === 'production',
-        sameSite: 'none', // TODO: Set to 'strict' when the frontend is on the same domain
-        maxAge: 1000 * 60 * 60 * 24 * 1
+        sameSite: 'strict', // TODO: Set to 'strict' when the frontend is on the same domain
+        maxAge: 1000 * 60 * 60 * 24 * 2
       })
     }
 

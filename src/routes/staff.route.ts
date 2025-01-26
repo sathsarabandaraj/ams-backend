@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import {Router} from 'express'
 import {
   createStaffHandler,
   deleteStaffController,
@@ -6,15 +6,12 @@ import {
   getStaffByUUIDHandler,
   updateStaffController
 } from '../controllers/staff.controller'
-import {
-  requestBodyValidator,
-  requestQueryValidator
-} from '../middlewares/request-validator.middleware'
-import { StaffSchema, UpdateStaffSchema } from '../schemas/staff.schema'
-import { PaginationSchema } from '../schemas/common/pagination.schema'
+import {requestBodyValidator, requestQueryValidator} from '../middlewares/request-validator.middleware'
+import {StaffSchema, UpdateStaffSchema} from '../schemas/staff.schema'
+import {PaginationSchema} from '../schemas/common/pagination.schema'
 import passport from 'passport'
-import { Roles } from '../enums'
-import { authorize } from '../middlewares/auth.middleware'
+import {Roles} from '../enums'
+import {authorize} from '../middlewares/auth.middleware'
 
 const router = Router()
 

@@ -1,26 +1,37 @@
-import { User } from '../entities/user.entity'
-import { hash } from 'bcrypt'
-import { AppDataSource } from '../configs/db.config'
-import { type IApiResult, type IPaginatedApiResult } from '../types'
-import { AccoutStatus, UserType } from '../enums'
-import { Staff } from '../entities/staff.entity'
+import {User} from '../entities/user.entity'
+import {hash} from 'bcrypt'
+import {AppDataSource} from '../configs/db.config'
+import {type IApiResult, type IPaginatedApiResult} from '../types'
+import {AccoutStatus, UserType} from '../enums'
+import {Staff} from '../entities/staff.entity'
+import {sysIdGenerator} from "../utils/system-id.util";
+import {Center} from "../entities/center.entity";
 
 export const createStaff = async (
   userData: User
 ): Promise<IApiResult<User>> => {
   const userRepository = AppDataSource.getRepository(User)
+  const centerRepository = AppDataSource.getRepository(Center)
 
   const queryRunner = AppDataSource.createQueryRunner()
   await queryRunner.connect()
   await queryRunner.startTransaction()
 
   try {
+    const centerData = await centerRepository.findOne(
+        {
+          where: {
+            uuid: userData.mainCenter.uuid
+          }
+        }
+    )
     if (userData.password) {
       userData.password = await hash(userData.password, 10)
     }
 
     const newUser = userRepository.create({
       ...userData,
+      systemId: sysIdGenerator(centerData?.code, UserType.STAFF),
       userType: UserType.STAFF,
       accountStatus: AccoutStatus.ACTIVE
     })

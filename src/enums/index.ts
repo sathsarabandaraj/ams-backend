@@ -1,4 +1,3 @@
-// src/enums/user.enum.ts
 export enum Gender {
   MALE = 'male',
   FEMALE = 'female',
@@ -55,4 +54,9 @@ export enum EnrollmentStatus {
   ENROLLED = 'enrolled',
   DROPPED = 'dropped',
   COMPLETED = 'completed'
+}
+
+export enum AttendanceInOutStatus {
+  IN = 'in',
+  OUT = 'out'
 }

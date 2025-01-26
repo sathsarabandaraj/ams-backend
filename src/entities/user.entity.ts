@@ -1,21 +1,11 @@
-import {
-  Entity,
-  Column,
-  JoinColumn,
-  ManyToOne,
-  BeforeInsert,
-  Index,
-  OneToOne,
-  Check
-} from 'typeorm'
-import { AccoutStatus, Gender, UserType } from '../enums'
+import {Check, Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne} from 'typeorm'
+import {AccoutStatus, Gender, UserType} from '../enums'
 import BaseEntity from './baseEntity'
-import { Center } from './center.entity'
-import { Staff } from './staff.entity'
-import { Student } from './student.entity'
-
-const characters =
-  '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+import {Center} from './center.entity'
+import {Staff} from './staff.entity'
+import {Student} from './student.entity'
+import {Rfid} from './rfid.entity'
+import {Attendance} from './attendance.entity'
 
 @Check(`"userType" = '${UserType.STUDENT}' AND "studentId" IS NOT NULL AND "staffId" IS NULL 
     OR "userType" = '${UserType.STAFF}' AND "staffId" IS NOT NULL AND "studentId" IS NULL`)
@@ -78,23 +68,12 @@ export class User extends BaseEntity {
     cascade: true,
     eager: false
   })
-  @JoinColumn({ name: 'staffId' })
+  @JoinColumn({name: 'staffId', referencedColumnName: 'uuid'})
   staff?: Staff
 
-  @BeforeInsert()
-  async generateSystemId(): Promise<void> {
-    const centerPrefix = this.mainCenter?.code?.toLowerCase() || 'unk'
-    const userType = this.userType === UserType.STUDENT ? 'stu' : 'sta'
+  @OneToMany(() => Rfid, (rfid) => rfid.user)
+  rfids: Rfid[];
 
-    let uniqueId = ''
-    const charactersLength = characters.length
-
-    for (let i = 0; i < 4; i++) {
-      uniqueId += characters.charAt(
-        Math.floor(Math.random() * charactersLength)
-      )
-    }
-
-    this.systemId = `${centerPrefix}-${userType}-${uniqueId}`
-  }
+  @OneToMany(() => Attendance, (attendance) => attendance.user)
+  attendances: Attendance[];
 }
