@@ -1,6 +1,13 @@
 import { getRfidByTag } from './../services/rfid.service';
 import { type Request, type Response } from 'express'
-import { getAllRdifs, getRfidByUuid, } from '../services/rfid.service'
+import {
+    getAllRfids,
+    getRfidByUuid,
+    assignRfidToUser,
+    removeRfidFromUser,
+    getUserRfids,
+    deleteRfid
+} from '../services/rfid.service'
 
 export const getAllRdifsHandler = async (
     req: Request,
@@ -11,8 +18,9 @@ export const getAllRdifsHandler = async (
         const pageSize = parseInt(req.query.pageSize as string)
         const order = req.query.order as string
         const onlyFloating = req.query.onlyFloating === 'true'
+        const withUser = req.query.withUser === 'true'
 
-        const feedback = await getAllRdifs(pageNumber, pageSize, order, onlyFloating)
+        const feedback = await getAllRfids(pageNumber, pageSize, order, onlyFloating, withUser)
 
         return res.status(feedback.statusCode).json({
             message: req.t(feedback.message ?? 'default.message'),
@@ -21,7 +29,8 @@ export const getAllRdifsHandler = async (
                 pageSize: feedback.pageSize,
                 totalItemCount: feedback.totalItemCount,
                 items: feedback.items
-            }        })
+            }
+        })
     } catch (error) {
         if (error instanceof Error) {
             return res.status(400).json({
@@ -58,7 +67,7 @@ export const getRfidByUUIDHandler = async (
     }
 }
 
-export const getRfidByTagHandler = async(
+export const getRfidByTagHandler = async (
     req: Request,
     res: Response
 ): Promise<Response> => {
@@ -78,6 +87,98 @@ export const getRfidByTagHandler = async(
             })
         }
 
+        throw error
+    }
+}
+
+export const assignRfidToUserHandler = async (
+    req: Request,
+    res: Response
+): Promise<Response> => {
+    try {
+        const { rfidUuid, userUuid } = req.params
+        const feedback = await assignRfidToUser(rfidUuid, userUuid)
+
+        return res.status(feedback.statusCode).json({
+            message: req.t(feedback.message ?? 'default.message'),
+            data: feedback.data
+        })
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(400).json({
+                error: req.t(error.name),
+                message: req.t(error.message)
+            })
+        }
+        throw error
+    }
+}
+
+export const removeRfidFromUserHandler = async (
+    req: Request,
+    res: Response
+): Promise<Response> => {
+    try {
+        const { rfidUuid } = req.params
+        const feedback = await removeRfidFromUser(rfidUuid)
+
+        return res.status(feedback.statusCode).json({
+            message: req.t(feedback.message ?? 'default.message'),
+            data: feedback.data
+        })
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(400).json({
+                error: req.t(error.name),
+                message: req.t(error.message)
+            })
+        }
+        throw error
+    }
+}
+
+export const getUserRfidsHandler = async (
+    req: Request,
+    res: Response
+): Promise<Response> => {
+    try {
+        const { userUuid } = req.params
+        const feedback = await getUserRfids(userUuid)
+
+        return res.status(feedback.statusCode).json({
+            message: req.t(feedback.message ?? 'default.message'),
+            data: feedback.data
+        })
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(400).json({
+                error: req.t(error.name),
+                message: req.t(error.message)
+            })
+        }
+        throw error
+    }
+}
+
+export const deleteRfidHandler = async (
+    req: Request,
+    res: Response
+): Promise<Response> => {
+    try {
+        const { uuid } = req.params
+        const feedback = await deleteRfid(uuid)
+
+        return res.status(feedback.statusCode).json({
+            message: req.t(feedback.message ?? 'default.message'),
+            data: feedback.data
+        })
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(400).json({
+                error: req.t(error.name),
+                message: req.t(error.message)
+            })
+        }
         throw error
     }
 }
