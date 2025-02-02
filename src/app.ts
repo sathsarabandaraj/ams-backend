@@ -1,19 +1,20 @@
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import type {Express, Request, Response} from 'express'
+import type { Express, Request, Response } from 'express'
 import express from 'express'
 import hardwareRoutes from './routes/hardware.route'
 import studentRoutes from './routes/student.route'
 import staffRoutes from './routes/staff.route'
 import authRoutes from './routes/auth.route'
-import {AppDataSource} from './configs/db.config'
+import rfidRoutes from './routes/rfid.route'
+import { AppDataSource } from './configs/db.config'
 import i18next from 'i18next'
 import path from 'path'
 import Backend from 'i18next-fs-backend'
 import middleware from 'i18next-http-middleware'
 import passport from 'passport'
-import {configurePassport} from './configs/passport.config'
+import { configurePassport } from './configs/passport.config'
 
 const app = express()
 
@@ -77,10 +78,11 @@ app.get('/', (req, res) => {
   res.send(req.t('rootMsg'))
 })
 
-app.use('/api/hardware', hardwareRoutes);
-app.use('/api/student', studentRoutes)
-app.use('/api/staff', staffRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/rfid', rfidRoutes)
+app.use('/api/staff', staffRoutes)
+app.use('/api/student', studentRoutes)
+app.use('/api/hardware', hardwareRoutes);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({

@@ -13,6 +13,6 @@ export const sysIdGenerator = (mainCenterCode: string | undefined, userType: Use
         uniqueId += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
 
-    return `${centerPrefix}-${userTypeCode}-${uniqueId}`;
+    return `${userTypeCode}-${centerPrefix}-${uniqueId}`;
 }
 

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 // Define the regex for systemId validation
-const systemIdPattern = /^(unk-(stu|sta)-[A-Za-z0-9]{4})$/
+const systemIdPattern = /^(sta|stu|unk)-[A-Za-z0-9]{4}-[A-Za-z0-9]{4,}$/
 
 export const SystemIDSchema = z
   .string()
