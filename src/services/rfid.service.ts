@@ -2,30 +2,27 @@ import { AppDataSource } from "../configs/db.config";
 import { Rfid } from "../entities/rfid.entity";
 import { IApiResult, IPaginatedApiResult } from "../types";
 import { User } from "../entities/user.entity";
+import { IsNull } from "typeorm";
 
 export const getAllRfids = async (
     pageNumber: number = 0,
     pageSize: number = 10,
     order: string = 'ASC',
     onlyFloating: boolean = false,
-    withUser: boolean = false
 ): Promise<IPaginatedApiResult<Rfid>> => {
     const rfidRepository = AppDataSource.getRepository(Rfid);
     try {
-        const queryBuilder = rfidRepository.createQueryBuilder('rfid');
+        const whereCondition = onlyFloating ? { user: IsNull() } : {};
 
-        //TODO: Add user relation
-
-        if (onlyFloating) {
-            queryBuilder.where('rfid.user IS NULL');
-        }
-
-        queryBuilder.orderBy('rfid.created_At', order.toUpperCase() as 'ASC' | 'DESC');
-
-        const skip = pageNumber * pageSize;
-        queryBuilder.skip(skip).take(pageSize);
-
-        const [items, totalItemCount] = await queryBuilder.getManyAndCount();
+        const [items, totalItemCount] = await rfidRepository.findAndCount({
+            where: whereCondition,
+            order: { created_at: order.toUpperCase() as 'ASC' | 'DESC' },
+            skip: pageNumber * pageSize,
+            take: pageSize,
+            relations: {
+                user: true
+            }
+        });
 
         if (items.length === 0) {
             return {
@@ -53,40 +50,41 @@ export const getAllRfids = async (
     }
 };
 
+
 export const getRfidByUuid = async (
-  rfidUuid: string
+    rfidUuid: string
 ): Promise<IApiResult<Rfid>> => {
-  const rfidRepository = AppDataSource.getRepository(Rfid)
-  try {
-      const rfid = await rfidRepository.findOne({
-      where: {
-        uuid: rfidUuid,
-      },
-      relations: {
-        user: true
-      }
-    })
+    const rfidRepository = AppDataSource.getRepository(Rfid)
+    try {
+        const rfid = await rfidRepository.findOne({
+            where: {
+                uuid: rfidUuid,
+            },
+            relations: {
+                user: true
+            }
+        })
 
-    if (!rfid) {
-      return {
-        statusCode: 404,
-        message: 'rfid.rfidNotFound',
-      }
-    }
+        if (!rfid) {
+            return {
+                statusCode: 404,
+                message: 'rfid.rfidNotFound',
+            }
+        }
 
-    return {
-      statusCode: 200,
-      message: 'rfid.rfidRetrieved',
-      data: rfid
+        return {
+            statusCode: 200,
+            message: 'rfid.rfidRetrieved',
+            data: rfid
+        }
+    } catch (error) {
+        throw new Error(
+            error instanceof Error ? error.message : 'rfid.rfidRetrievalFailed'
+        )
     }
-  } catch (error) {
-    throw new Error(
-      error instanceof Error ? error.message : 'rfid.rfidRetrievalFailed'
-    )
-  }
 }
 
-export const getRfidByTag = async(
+export const getRfidByTag = async (
     rfidTag: string
 ): Promise<IApiResult<Rfid>> => {
     const rfidRepository = AppDataSource.getRepository(Rfid);

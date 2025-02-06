@@ -18,9 +18,8 @@ export const getAllRdifsHandler = async (
         const pageSize = parseInt(req.query.pageSize as string)
         const order = req.query.order as string
         const onlyFloating = req.query.onlyFloating === 'true'
-        const withUser = req.query.withUser === 'true'
 
-        const feedback = await getAllRfids(pageNumber, pageSize, order, onlyFloating, withUser)
+        const feedback = await getAllRfids(pageNumber, pageSize, order, onlyFloating)
 
         return res.status(feedback.statusCode).json({
             message: req.t(feedback.message ?? 'default.message'),

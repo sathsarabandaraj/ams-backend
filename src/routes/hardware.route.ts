@@ -7,7 +7,7 @@ import {Router} from "express";
 
 const router = Router()
 
-router.get('/registration-check', isModuleRegisteredHandler)
+router.get('/registration-check/:macAddress', isModuleRegisteredHandler)
 router.post('/register-access-module', registerAccessModuleHandler)
 router.post('/register-rfid', registerRfidTagHandler)
 
