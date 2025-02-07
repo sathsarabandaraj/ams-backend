@@ -1,8 +1,8 @@
-import {AppDataSource} from '../configs/db.config';
-import {Rfid} from '../entities/rfid.entity';
-import {User} from '../entities/user.entity';
-import {IApiResult} from '../types';
-import {AccessModule} from '../entities/access-module.entity';
+import { AppDataSource } from '../configs/db.config';
+import { Rfid } from '../entities/rfid.entity';
+import { User } from '../entities/user.entity';
+import { IApiResult, IPaginatedApiResult } from '../types';
+import { AccessModule } from '../entities/access-module.entity';
 
 export const registerAccessModule = async (
     moduleData: Partial<AccessModule>
@@ -42,7 +42,7 @@ export const isModuleRegistered = async (macAddress: string): Promise<boolean> =
     const moduleRepository = AppDataSource.getRepository(AccessModule);
 
     const module = await moduleRepository.findOne({
-        where: {macAddress},
+        where: { macAddress },
     });
 
     return !!module;
@@ -60,7 +60,7 @@ export const registerRfidTag = async (
     try {
         // Check if RFID tag already exists
         const existingRfid = await rfidRepository.findOne({
-            where: {rfidTag: rfidData.rfidTag},
+            where: { rfidTag: rfidData.rfidTag },
         });
 
         if (!existingRfid) {
@@ -106,7 +106,7 @@ export const assignUserToRfidTag = async (
     try {
         // Find the RFID tag by tag
         const rfid = await rfidRepository.findOne({
-            where: {rfidTag},
+            where: { rfidTag },
             relations: ['user'], // Make sure to load the user relationship
         });
 
@@ -115,7 +115,7 @@ export const assignUserToRfidTag = async (
         }
 
         // Check if the user exists
-        const user = await userRepository.findOne({where: {uuid: userId}});
+        const user = await userRepository.findOne({ where: { uuid: userId } });
         if (!user) {
             throw new Error('user.notFound');
         }
@@ -141,3 +141,51 @@ export const assignUserToRfidTag = async (
         await queryRunner.release();
     }
 };
+
+export const getAllAccessModules = async (
+    pageNumber: number = 0,
+    pageSize: number = 10,
+    onlyActive: boolean = false
+): Promise<IPaginatedApiResult<AccessModule>> => {
+    const moduleRepository = AppDataSource.getRepository(AccessModule)
+
+    try {
+        const whereCondition: any = {}
+        if (onlyActive) {
+            whereCondition.isActive = true
+        }
+
+        const [items, totalItemCount] = await moduleRepository.findAndCount({
+            where: whereCondition,
+            order: {
+                created_at: 'DESC'
+            },
+            skip: pageNumber * pageSize,
+            take: pageSize
+        })
+
+        if (items.length === 0) {
+            return {
+                statusCode: 404,
+                message: 'module.noModulesFound',
+                pageNumber,
+                pageSize,
+                totalItemCount: 0,
+                items: []
+            }
+        }
+
+        return {
+            statusCode: 200,
+            message: 'module.modulesRetrieved',
+            pageNumber,
+            pageSize,
+            totalItemCount,
+            items
+        }
+    } catch (error) {
+        throw new Error(
+            error instanceof Error ? error.message : 'module.retrievalFailed'
+        )
+    }
+}

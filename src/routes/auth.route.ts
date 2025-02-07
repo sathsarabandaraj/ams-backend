@@ -1,7 +1,8 @@
-import {Router} from 'express'
-import {loginOTPHandler, logoutHandler, verifyOTPHandler} from '../controllers/auth.controller'
-import {requestBodyValidator} from '../middlewares/request-validator.middleware'
-import {LoginSchema, OTPVerificationSchema} from '../schemas/auth.schemas'
+import { Router } from 'express'
+import { loginOTPHandler, logoutHandler, verifyOTPHandler, getMeHandler } from '../controllers/auth.controller'
+import { requestBodyValidator } from '../middlewares/request-validator.middleware'
+import { LoginSchema, OTPVerificationSchema } from '../schemas/auth.schemas'
+import passport from 'passport'
 
 const router = Router()
 
@@ -12,5 +13,11 @@ router.post(
   verifyOTPHandler
 )
 router.post('/logout', logoutHandler)
+
+router.get(
+  '/me',
+  passport.authenticate('jwt', { session: false }),
+  getMeHandler
+)
 
 export default router

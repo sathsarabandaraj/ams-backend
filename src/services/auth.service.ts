@@ -1,13 +1,13 @@
-import {compare} from 'bcrypt'
-import {AppDataSource} from '../configs/db.config'
-import {User} from '../entities/user.entity'
-import {type IApiResult} from '../types'
-import {AccoutStatus, Roles, UserType} from '../enums'
-import {generateOTP} from '../utils/auth.util'
+import { compare } from 'bcrypt'
+import { AppDataSource } from '../configs/db.config'
+import { User } from '../entities/user.entity'
+import { type IApiResult } from '../types'
+import { AccoutStatus, Roles, UserType } from '../enums'
+import { generateOTP } from '../utils/auth.util'
 import redisClient from '../configs/redis.config'
-import {JWT_EXPIRY, JWT_SECRET, OTP_EXPIRY} from '../configs/env.config'
+import { JWT_EXPIRY, JWT_SECRET, OTP_EXPIRY } from '../configs/env.config'
 import jwt from 'jsonwebtoken'
-import {sendOtpEmail} from '../utils/email.util'
+import { sendOtpEmail } from '../utils/email.util'
 
 export const loginOTP = async (
     systemId: string,
@@ -94,7 +94,7 @@ export const verifyOTP = async (
         const userRepository = AppDataSource.getRepository(User)
 
         const user = await userRepository.findOne({
-            where: {systemId},
+            where: { systemId },
             relations: {
                 staff: true
             }
@@ -134,9 +134,43 @@ export const verifyOTP = async (
             data: token
         }
     } catch
-        (error) {
+    (error) {
         throw new Error(
             error instanceof Error ? error.message : 'auth.otpVerificationFailed'
+        )
+    }
+}
+
+export const getMe = async (
+    systemId: string
+): Promise<IApiResult<Partial<User>>> => {
+    try {
+        const userRepository = AppDataSource.getRepository(User)
+
+        const user = await userRepository.findOne({
+            where: { systemId },
+            relations: {
+                staff: true,
+                student: true,
+                mainCenter: true
+            }
+        })
+
+        if (!user) {
+            return {
+                statusCode: 404,
+                message: 'auth.userNotFound'
+            }
+        }
+
+        return {
+            statusCode: 200,
+            message: 'auth.userDataRetrieved',
+            data: user
+        }
+    } catch (error) {
+        throw new Error(
+            error instanceof Error ? error.message : 'auth.userDataRetrievalFailed'
         )
     }
 }

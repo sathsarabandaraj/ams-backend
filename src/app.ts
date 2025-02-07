@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import type { Express, Request, Response } from 'express'
 import express from 'express'
+import attendanceRoutes from './routes/attendance.route'
 import hardwareRoutes from './routes/hardware.route'
 import studentRoutes from './routes/student.route'
 import staffRoutes from './routes/staff.route'
@@ -15,6 +16,7 @@ import Backend from 'i18next-fs-backend'
 import middleware from 'i18next-http-middleware'
 import passport from 'passport'
 import { configurePassport } from './configs/passport.config'
+import dashboardRoutes from './routes/dashboard.routes'
 
 const app = express()
 
@@ -83,6 +85,8 @@ app.use('/api/rfid', rfidRoutes)
 app.use('/api/staff', staffRoutes)
 app.use('/api/student', studentRoutes)
 app.use('/api/hardware', hardwareRoutes);
+app.use('/api/attendance', attendanceRoutes);
+app.use('/api/dashboard', dashboardRoutes)
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({
