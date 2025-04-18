@@ -62,7 +62,6 @@ export const getDashboardStats = async (): Promise<IApiResult<DashboardStats>> =
             }
         }
     } catch (error) {
-        console.error('Error fetching dashboard stats:', error)
         throw new Error(
             error instanceof Error
                 ? `dashboard.statsRetrievalFailed: ${error.message}`

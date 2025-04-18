@@ -12,14 +12,12 @@ export const registerAccessModule = async (
     const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-    console.log('moduleData', moduleData);
     try {
         const newAccessModule = moduleRepository.create({
             ...moduleData,
             isActive: false,
         });
 
-        console.log(newAccessModule);
         const savedAccessModule = await moduleRepository.save(newAccessModule);
         await queryRunner.commitTransaction();
 

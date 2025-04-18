@@ -1,4 +1,4 @@
-import { compare } from 'bcrypt'
+import { compare, hash } from 'bcrypt'
 import { AppDataSource } from '../configs/db.config'
 import { User } from '../entities/user.entity'
 import { type IApiResult } from '../types'
@@ -7,7 +7,7 @@ import { generateOTP } from '../utils/auth.util'
 import redisClient from '../configs/redis.config'
 import { JWT_EXPIRY, JWT_SECRET, OTP_EXPIRY } from '../configs/env.config'
 import jwt from 'jsonwebtoken'
-import { sendOtpEmail } from '../utils/email.util'
+import { sendOtpEmail, sendPasswordResetEmail } from '../utils/email.util'
 
 export const loginOTP = async (
     systemId: string,
@@ -60,15 +60,15 @@ export const loginOTP = async (
             user.email,
             otp
         )
-        if (sendEmailResponse.$metadata.httpStatusCode !== 200) {
+        if (sendEmailResponse.$metadata.httpStatusCode === 200) {
             return {
                 statusCode: 200,
                 message: 'auth.otpSent'
             }
         } else {
             return {
-                statusCode: sendEmailResponse.$metadata.httpStatusCode,
-                message: 'auth.otpSent'
+                statusCode: sendEmailResponse.$metadata.httpStatusCode ?? 500,
+                message: 'auth.otpFailed'
             }
         }
     } catch (error) {
@@ -171,6 +171,92 @@ export const getMe = async (
     } catch (error) {
         throw new Error(
             error instanceof Error ? error.message : 'auth.userDataRetrievalFailed'
+        )
+    }
+}
+
+export const forgotPassword = async (
+    systemId: string
+): Promise<IApiResult<unknown>> => {
+    try {
+        const userRepository = AppDataSource.getRepository(User)
+
+        const user = await userRepository.findOne({
+            where: { systemId }
+        })
+
+        if (!user) {
+            return {
+                statusCode: 404,
+                message: 'auth.userNotFound'
+            }
+        }
+
+        const otp = generateOTP()
+        await redisClient.setEx(`forgot:${systemId}`, OTP_EXPIRY, otp)
+        const sendEmailResponse = await sendPasswordResetEmail(
+            user.firstName,
+            user.email,
+            otp
+        )
+        if (sendEmailResponse.$metadata.httpStatusCode === 200) {
+            return {
+                statusCode: 200,
+                message: 'auth.otpSent'
+            }
+        } else {
+            return {
+                statusCode: sendEmailResponse.$metadata.httpStatusCode ?? 500,
+                message: 'auth.otpFailed'
+            }
+        }
+
+    } catch (error) {
+        throw new Error(
+            error instanceof Error ? error.message : 'auth.otpSendFailed'
+        )
+    }
+}
+
+export const resetPassword = async (
+    systemId: string,
+    otp: string,
+    newPassword: string
+): Promise<IApiResult<unknown>> => {
+    try {
+        const storedOtp = await redisClient.get(`forgot:${systemId}`)
+        if (!storedOtp || storedOtp !== otp) {
+            return {
+                statusCode: 401,
+                message: 'auth.invalidOTP'
+            }
+        }
+
+        const userRepository = AppDataSource.getRepository(User)
+
+        const user = await userRepository.findOne({
+            where: { systemId }
+        })
+
+        if (!user) {
+            return {
+                statusCode: 404,
+                message: 'auth.userNotFound'
+            }
+        }
+
+        user.password = await hash(newPassword, 10)
+
+        await userRepository.save(user)
+        await redisClient.del(`forgot:${systemId}`)
+
+        return {
+            statusCode: 200,
+            message: 'auth.passwordResetSuccess'
+        }
+    } catch (error) {
+        throw new Error(
+            error instanceof Error ? error.message : 'auth.passwordResetFailed'
         )
     }
 }

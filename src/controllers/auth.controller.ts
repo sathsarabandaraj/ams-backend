@@ -1,9 +1,10 @@
 import { type Request, type Response } from 'express'
-import { loginOTP, verifyOTP, getMe } from '../services/auth.service'
+import { loginOTP, verifyOTP, getMe, forgotPassword, resetPassword } from '../services/auth.service'
 import { JWT_SECRET, NODE_ENV } from '../configs/env.config'
 import { type IApiResult } from '../types'
 import { Roles } from '../enums'
 import jwt from 'jsonwebtoken'
+
 export const loginOTPHandler = async (
   req: Request,
   res: Response
@@ -96,6 +97,49 @@ export const getMeHandler = async (
         message: req.t('server.internalServerErr')
       })
     }
+    throw error
+  }
+}
+
+export const forgotPasswordHandler = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const { systemId } = req.body
+
+    const feedback = await forgotPassword(systemId)
+
+    return res.status(feedback.statusCode).json({
+      message: req.t(feedback.message ?? 'default.message')
+    })
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(400).json({
+        error: req.t(error.name),
+        message: req.t(error.message)
+      })
+    }
+
+    throw error
+  }
+}
+
+export const resetPasswordHandler = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const { systemId, otp, newPassword } = req.body
+
+    const feedback = await resetPassword(systemId, otp, newPassword)
+
+    return res.status(feedback.statusCode).json({
+      message: req.t(feedback.message ?? 'default.message')
+    })
+  }
+  catch (error) {
+    if (error instanceof Error) {
+      return res.status(400).json({
+        error: req.t(error.name),
+        message: req.t(error.message)
+      })
+    }
+
     throw error
   }
 }

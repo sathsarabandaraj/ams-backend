@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { loginOTPHandler, logoutHandler, verifyOTPHandler, getMeHandler } from '../controllers/auth.controller'
+import { loginOTPHandler, logoutHandler, verifyOTPHandler, getMeHandler, forgotPasswordHandler, resetPasswordHandler } from '../controllers/auth.controller'
 import { requestBodyValidator } from '../middlewares/request-validator.middleware'
 import { LoginSchema, OTPVerificationSchema } from '../schemas/auth.schemas'
 import passport from 'passport'
@@ -19,5 +19,9 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   getMeHandler
 )
+
+router.post('/forgot-password', forgotPasswordHandler)
+
+router.post('/reset-password', resetPasswordHandler)
 
 export default router

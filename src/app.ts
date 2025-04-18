@@ -16,7 +16,8 @@ import Backend from 'i18next-fs-backend'
 import middleware from 'i18next-http-middleware'
 import passport from 'passport'
 import { configurePassport } from './configs/passport.config'
-import dashboardRoutes from './routes/dashboard.routes'
+import dashboardRoutes from './routes/dashboard.route'
+import { NODE_ENV } from './configs/env.config'
 
 const app = express()
 
@@ -62,6 +63,8 @@ i18next
 app.use(middleware.handle(i18next))
 app.use(cookieParser())
 app.use(bodyParser.json())
+
+NODE_ENV === 'development' ? console.log('Development mode enabled') : null;
 
 app.use(passport.initialize())
 configurePassport(passport)
